@@ -176,7 +176,7 @@
                 document.getElementById('withdraw-form').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const amount = parseFloat(document.getElementById('amount').value);
-                    if(amount < 20 || amount > userState.points) { tg.showAlert("Invalid Amount (Min 20 TK)"); return; }
+                    if(amount < 40 || amount > userState.points) { tg.showAlert("Invalid Amount (Min 20 TK)"); return; }
                     
                     const method = document.getElementById('withdraw-method').value;
                     const acc = document.getElementById('account-number').value;
