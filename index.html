@@ -2,237 +2,148 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Earn & Reward App</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Earning App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-        :root {
-            --font-family: 'Nunito', sans-serif;
-            --bg-color-light: #f4f4f9; --secondary-bg-light: #ffffff; --text-color-light: #1c1c1e;
-            --subtle-text-light: #6d6d72; --primary-color-light: #007aff; --border-color-light: #e0e0e0;
-            --bg-color-dark: #121212; --secondary-bg-dark: #1c1c1e; --text-color-dark: #ffffff;
-            --subtle-text-dark: #8e8e93; --primary-color-dark: #0a84ff; --border-color-dark: #38383a;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-family); transition: background-color 0.3s, color 0.3s; }
-        body.light-theme { background-color: var(--bg-color-light); color: var(--text-color-light); }
-        body.dark-theme { background-color: var(--bg-color-dark); color: var(--text-color-dark); }
-        #app { max-width: 500px; margin: 0 auto; padding-bottom: 70px; }
-        .profile-header { padding: 20px 15px; display: flex; align-items: center; border-bottom: 1px solid; }
-        .light-theme .profile-header { border-bottom-color: var(--border-color-light); }
-        .dark-theme .profile-header { border-bottom-color: var(--border-color-dark); }
-        .profile-info { display: flex; align-items: center; gap: 15px; }
-        #user-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid; }
-        .light-theme #user-photo { border-color: var(--primary-color-light); }
-        .dark-theme #user-photo { border-color: var(--primary-color-dark); }
-        .user-details h1 { font-size: 1.2rem; font-weight: 700; }
-        .verified-icon { font-size: 1rem; margin-left: 5px; color: var(--primary-color-dark); }
-        .user-details p { font-size: 0.9rem; font-weight: 600; }
-        main { padding: 15px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: white; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { background-color: #1f1f1f; padding: 20px; text-align: center; border-bottom: 2px solid #333; }
+        .user-info { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px; }
+        .user-photo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #007bff; }
+        main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
         .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .stat-card { padding: 20px; border-radius: 12px; text-align: center; background-color: var(--secondary-bg-dark); border: 1px solid var(--border-color-dark); }
-        .stat-card p { font-size: 1.5rem; font-weight: 700; color: var(--primary-color-dark); }
-        .referral-section { margin-top: 30px; padding: 20px; border-radius: 12px; background-color: var(--secondary-bg-dark); text-align: center; }
-        #referral-link { width: 100%; padding: 10px; text-align: center; border: 1px dashed var(--primary-color-dark); border-radius: 8px; margin: 10px 0; background: none; color: white; }
-        #copy-ref-link-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; color: #fff; background-color: var(--primary-color-dark); font-weight: 600; cursor: pointer; }
-        .task-container { padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; background-color: var(--secondary-bg-dark); }
-        .task-icon { font-size: 3rem; margin-bottom: 15px; color: var(--primary-color-dark); }
-        .action-btn { width: 100%; padding: 15px; font-size: 1rem; font-weight: 700; color: #fff; border: none; border-radius: 10px; cursor: pointer; background-color: var(--primary-color-dark); }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 500px; margin: 0 auto; display: flex; justify-content: space-around; padding: 5px 0; background-color: var(--secondary-bg-dark); border-top: 1px solid var(--border-color-dark); }
-        .nav-btn { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--subtle-text-dark); flex-grow: 1; }
-        .nav-btn i { font-size: 1.4rem; margin-bottom: 3px; }
-        .nav-btn.active { color: var(--primary-color-dark); font-weight: 700; }
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
-        .modal-content { padding: 30px; border-radius: 15px; text-align: center; background-color: var(--secondary-bg-dark); color: white; }
+        .page.active { display: block; }
+        .card { background-color: #1f1f1f; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .btn { background-color: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 10px; transition: 0.3s; }
+        .btn:hover { background-color: #0056b3; }
+        nav { position: fixed; bottom: 0; width: 100%; background-color: #1f1f1f; display: flex; justify-content: space-around; padding: 10px 0; border-top: 2px solid #333; }
+        nav div { text-align: center; color: #888; cursor: pointer; font-size: 12px; }
+        nav div.active { color: #007bff; }
+        nav i { font-size: 20px; display: block; margin-bottom: 5px; }
     </style>
 </head>
-<body class="dark-theme">
+<body>
 
-    <div id="app">
-        <header class="profile-header">
-            <div class="profile-info">
-                <img id="user-photo" src="https://i.imgur.com/placeholder.png" alt="User Photo">
-                <div class="user-details">
-                    <h1 id="user-name">Loading... <i class="fas fa-check-circle verified-icon"></i></h1>
-                    <p>Balance: <span id="user-points">0</span> TK</p>
-                </div>
-            </div>
-        </header>
+<header>
+    <h2>Global Earning</h2>
+    <div class="user-info">
+        <img src="https://via.placeholder.com/50" class="user-photo" alt="User">
+        <div>
+            <div id="user-name">Loading...</div>
+            <div id="user-balance">Balance: 0.00 TK</div>
+        </div>
+    </div>
+</header>
 
-        <main id="main-content">
-            <div id="home-page" class="page active">
-                <h2>Dashboard</h2>
-                <div class="stats-grid">
-                    <div class="stat-card"><h3>Daily Ads</h3><p><span id="daily-ads-watched">0</span>/50</p></div>
-                    <div class="stat-card"><h3>Referrals</h3><p id="referral-count">0</p></div>
-                </div>
-                <div class="referral-section">
-                    <h3>Refer & Earn!</h3>
-                    <input type="text" id="referral-link" readonly>
-                    <button id="copy-ref-link-btn">Copy Link</button>
-                </div>
-            </div>
-
-            <div id="tasks-page" class="page">
-                <h2>Tasks</h2>
-                <div class="task-container">
-                    <i class="fas fa-video task-icon"></i>
-                    <h3>Watch Rewarded Ad</h3>
-                    <p>Earn 20 TK per ad.</p>
-                    <button id="watch-ad-btn" class="action-btn">Watch Ad</button>
-                </div>
-                <div class="task-container">
-                    <i class="fab fa-telegram task-icon"></i>
-                    <h3>Join Channel</h3>
-                    <p>Get 5 TK bonus.</p>
-                    <button id="join-channel-btn" class="action-btn">Join & Claim</button>
-                </div>
-            </div>
-            
-            <div id="withdraw-page" class="page">
-                <h2>Withdraw</h2>
-                <p>Min Withdraw: 20 TK</p>
-                <form id="withdraw-form" style="margin-top:15px;">
-                    <select id="withdraw-method" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;">
-                        <option value="Bkash">Bkash</option>
-                        <option value="Nagad">Nagad</option>
-                    </select>
-                    <input type="text" id="account-number" placeholder="Account Number" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;" required>
-                    <input type="number" id="amount" placeholder="Amount" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;" required>
-                    <button type="submit" id="withdraw-submit-btn" class="action-btn">Submit Request</button>
-                </form>
-            </div>
-        </main>
-
-        <nav class="bottom-nav">
-            <button class="nav-btn active" data-page="home-page"><i class="fas fa-home"></i><span>Home</span></button>
-            <button class="nav-btn" data-page="tasks-page"><i class="fas fa-tasks"></i><span>Tasks</span></button>
-            <button class="nav-btn" data-page="withdraw-page"><i class="fas fa-wallet"></i><span>Withdraw</span></button>
-        </nav>
+<main>
+    <div id="home" class="page active">
+        <div class="card">
+            <h3>Daily Tasks</h3>
+            <p>Complete tasks to earn money</p>
+            <button class="btn" onclick="showPage('tasks')">Go to Tasks</button>
+        </div>
+        <div class="card">
+            <h3>Refer & Earn</h3>
+            <p>Invite friends and get bonus</p>
+            <button class="btn" onclick="copyReferLink()">Copy Link</button>
+        </div>
     </div>
 
-    <div id="loading-modal" class="modal">
-        <div class="modal-content"><p>Loading Ad...</p></div>
+    <div id="tasks" class="page">
+        <div class="card">
+            <h3>Watch Video Ad</h3>
+            <p>Earn 0.15 TK per ad</p>
+            <button class="btn" onclick="watchAd()">Watch Ad</button>
+        </div>
+        <div class="card">
+            <h3>Join Channel</h3>
+            <p>Get 5 TK Bonus</p>
+            <button class="btn" onclick="window.open('https://t.me/Incometipsbb')">Join Now</button>
+        </div>
     </div>
+
+    <div id="withdraw" class="page">
+        <div class="card">
+            <h3>Withdraw Money</h3>
+            <input type="text" id="wallet-number" placeholder="Enter Number" style="width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+            <select id="method" style="width: 95%; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+            </select>
+            <input type="number" id="amount" placeholder="Amount (Min 20 TK)" style="width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+            <button class="btn" onclick="submitWithdraw()">Submit Request</button>
+        </div>
+    </div>
+</main>
+
+<nav>
+    <div class="active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</div>
+    <div onclick="showPage('tasks')"><i class="fas fa-tasks"></i>Tasks</div>
+    <div onclick="showPage('withdraw')"><i class="fas fa-wallet"></i>Withdraw</div>
+</nav>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="//libtl.com/sdk.js" data-zone="10506581" data-sdk="show_10506581"></script>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    // --- আপনার তথ্য ---
+    const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
+    const ADMIN_CHAT_ID = "7677039712"; 
     
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tg = window.Telegram.WebApp;
+    let balance = parseFloat(localStorage.getItem('balance')) || 0;
 
-            // --- আপনার দেওয়া তথ্যসমূহ ---
-            const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
-            const ADMIN_CHAT_ID = "7677039712"; // আপনার আগের ফাইলের আইডি রাখা হয়েছে
-            const CHANNEL_LINK = "https://t.me/Incometipsbb";
-            const MIN_WITHDRAW_POINTS = 20; 
-            const POINTS_PER_AD = 20;
-            const DAILY_AD_LIMIT = 25;
+    function updateUI() {
+        document.getElementById('user-name').innerText = tg.initDataUnsafe.user?.first_name || "User";
+        document.getElementById('user-balance').innerText = `Balance: ${balance.toFixed(2)} TK`;
+    }
 
-            // --- State ---
-            let userState = { points: 0, dailyAdWatchCount: 0, lastAdWatchDate: null, referrals: [], hasJoinedChannel: false, userId: null };
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        document.querySelectorAll('nav div').forEach(d => d.classList.remove('active'));
+    }
 
-            const saveState = () => { if(userState.userId) localStorage.setItem(`userState_${userState.userId}`, JSON.stringify(userState)); };
-            const loadState = (userId) => { const s = localStorage.getItem(`userState_${userId}`); if(s) userState = JSON.parse(s); };
-
-            const initApp = () => {
-                tg.ready(); tg.expand();
-                const user = tg.initDataUnsafe.user;
-                if(!user) return;
-                userState.userId = user.id;
-                loadState(user.id);
+    function watchAd() {
+        if (typeof show_10506581 === 'function') {
+            show_10506581().then(() => {
+                balance += 0.15;
+                localStorage.setItem('balance', balance);
                 updateUI();
-                setupEventListeners();
-            };
+                alert("আপনি ০.১৫ টাকা পেয়েছেন!");
+            }).catch(() => alert("Ad failed to load."));
+        }
+    }
 
-            const updateUI = () => {
-                const user = tg.initDataUnsafe.user;
-                if(user) {
-                    document.getElementById('user-photo').src = user.photo_url || 'https://i.imgur.com/placeholder.png';
-                    document.getElementById('user-name').innerText = user.first_name;
+    function submitWithdraw() {
+        const number = document.getElementById('wallet-number').value;
+        const amount = document.getElementById('amount').value;
+        const method = document.getElementById('method').value;
+
+        if (amount < 20 || amount > balance) {
+            alert("সঠিক অ্যামাউন্ট দিন (নূন্যতম ২০ টাকা)");
+            return;
+        }
+
+        const message = `নতুন উইথড্র রিকোয়েস্ট:\nনাম: ${tg.initDataUnsafe.user?.first_name}\nনাম্বার: ${number}\nমেথড: ${method}\nপরিমাণ: ${amount} TK`;
+        
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_CHAT_ID}&text=${encodeURIComponent(message)}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.ok) {
+                    balance -= amount;
+                    localStorage.setItem('balance', balance);
+                    updateUI();
+                    alert("রিকোয়েস্ট সফল হয়েছে!");
+                } else {
+                    alert("Error: বট টোকেন বা আইডি ভুল।");
                 }
-                document.getElementById('user-points').innerText = userState.points;
-                document.getElementById('daily-ads-watched').innerText = userState.dailyAdWatchCount;
-                document.getElementById('referral-link').value = `https://t.me/your_bot?start=ref_${userState.userId}`;
-            };
+            });
+    }
 
-            const setupEventListeners = () => {
-                // Watch Ad
-                document.getElementById('watch-ad-btn').addEventListener('click', () => {
-                    if(userState.dailyAdWatchCount >= DAILY_AD_LIMIT) { tg.showAlert("Limit Over!"); return; }
-                    document.getElementById('loading-modal').style.display = 'flex';
-                    
-                    show_10506581().then(() => {
-                        userState.points += POINTS_PER_AD;
-                        userState.dailyAdWatchCount++;
-                        saveState(); updateUI();
-                        document.getElementById('loading-modal').style.display = 'none';
-                        tg.showAlert(`Success! Earned ${POINTS_PER_AD} TK`);
-                    }).catch(() => {
-                        document.getElementById('loading-modal').style.display = 'none';
-                        tg.showAlert("Ad failed to load.");
-                    });
-                });
-
-                document.getElementById('join-channel-btn').addEventListener('click', () => {
-                    tg.openTelegramLink(CHANNEL_LINK);
-                    if(!userState.hasJoinedChannel) {
-                        userState.points += 10; userState.hasJoinedChannel = true;
-                        saveState(); updateUI();
-                    }
-                });
-
-                document.getElementById('withdraw-form').addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const amount = parseInt(document.getElementById('amount').value);
-                    if(amount < MIN_WITHDRAW_POINTS || amount > userState.points) { tg.showAlert("Invalid Amount"); return; }
-                    
-                    const method = document.getElementById('withdraw-method').value;
-                    const acc = document.getElementById('account-number').value;
-                    const user = tg.initDataUnsafe.user;
-                    
-                    const msg = `Withdraw: ${amount} TK\nMethod: ${method}\nAcc: ${acc}\nUser: ${user.first_name} (@${user.username})`;
-                    
-                    try {
-                        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: msg })
-                        });
-                        userState.points -= amount;
-                        saveState(); updateUI();
-                        tg.showAlert("Request Sent!");
-                    } catch(e) { tg.showAlert("Error!"); }
-                });
-
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                        document.getElementById(btn.dataset.page).classList.add('active');
-                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                    });
-                });
-                
-                document.getElementById('copy-ref-link-btn').addEventListener('click', () => {
-                    navigator.clipboard.writeText(document.getElementById('referral-link').value);
-                    tg.showAlert("Copied!");
-                });
-            };
-
-            initApp();
-        });
-    </script>
+    updateUI();
+</script>
 </body>
 </html>
