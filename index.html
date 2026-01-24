@@ -82,7 +82,7 @@ main { padding: 15px; }
 <div class="task-container">
 <i class="fas fa-video task-icon"></i>
 <h3>Watch Rewarded Ad</h3>
-<p>Earn 0.15 TK (Step 1 + Step 2)</p>
+<p>Earn 0.10 TK (Step 1 + Step 2)</p>
 <button id="watch-ad-btn" class="action-btn">Watch Ad</button>
 </div>
 <div class="task-container">
@@ -136,7 +136,7 @@ const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
 const ADMIN_CHAT_ID = "7677039712"; 
 const BOT_USERNAME = "globalearningbdbot"; 
 const ADSTERRA_SMART_LINK = "https://www.effectivegatecpm.com/i70hzhn4?key=6ac7c7281b42bc6d77d53248d2f93c9d";
-const POINTS_PER_AD = 0.15; 
+const POINTS_PER_AD = 0.10; // আপনি ১০ পয়সা করে দিতে চেয়েছিলেন
 const CHANNEL_BONUS = 2; 
 const MIN_WITHDRAW = 40; 
 const SLOT_LIMIT = 25; 
@@ -204,7 +204,7 @@ timeLeft--;
 text.innerText = `অপেক্ষা করুন: ${timeLeft}s`;
 if(timeLeft <= 0) {
 clearInterval(timer1);
-text.innerText = "Step 1 Complete!";
+text.innerText = "Step 1 শেষ! নিচের বাটনে ক্লিক করুন।";
 contBtn.style.display = 'block';
 }
 }, 1000);
@@ -225,12 +225,12 @@ text.innerText = `আরও অপেক্ষা করুন: ${timeLeft2}s`;
 if(timeLeft2 <= 0) {
 clearInterval(timer2);
 modal.style.display = 'none';
-userState.points += POINTS_PER_AD;
+userState.points += POINTS_PER_AD; // ১০ পয়সা যোগ হবে
 userState.dailyAdWatchCount++;
 if(userState.dailyAdWatchCount === SLOT_LIMIT) userState.lastResetTime = Date.now();
 saveState(); updateUI();
 show_10506581('pop').catch(() => {});
-tg.showAlert("অভিনন্দন! ০.১৫ টাকা যোগ হয়েছে।");
+tg.showAlert("সফল! ০.১০ টাকা যোগ হয়েছে।");
 }
 }, 1000);
 };
