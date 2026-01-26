@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Global Earning BD</title>
+<title>Global Earning BD - High Rate</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-:root { --font-family: 'Nunito', sans-serif; --bg: #121212; --card: #1c1c1e; --text: #ffffff; --primary: #0a84ff; --border: #38383a; }
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
+:root { --bg: #121212; --card: #1c1c1e; --text: #ffffff; --primary: #0a84ff; --border: #38383a; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
 body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 #app { max-width: 500px; margin: 0 auto; }
 .profile-header { padding: 20px 15px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
@@ -21,7 +21,8 @@ body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 .task-container { padding: 25px; border-radius: 15px; text-align: center; background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; }
 .action-btn { width: 100%; padding: 15px; font-size: 1rem; font-weight: 700; color: #fff; border: none; border-radius: 10px; cursor: pointer; background: var(--primary); }
 .action-btn:disabled { background: #444; cursor: not-allowed; }
-.input-box { width: 100%; padding: 15px; border-radius: 10px; background: #2c2c2e; border: 1px solid var(--border); color: #fff; margin-bottom: 15px; font-size: 1rem; }
+.input-box { width: 100%; padding: 15px; border-radius: 10px; background: #2c2c2e; border: 1px solid var(--border); color: #fff; margin-bottom: 15px; }
+.vpn-notice { background: #ff4500; color: white; padding: 12px; text-align: center; font-weight: bold; border-radius: 8px; margin: 10px; display: none; border: 2px solid #fff; }
 .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; display: flex; justify-content: space-around; padding: 10px 0; background: var(--card); border-top: 1px solid var(--border); }
 .nav-btn { background: none; border: none; color: #8e8e93; font-size: 0.75rem; cursor: pointer; }
 .nav-btn.active { color: var(--primary); font-weight: 700; }
@@ -33,6 +34,10 @@ body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 <body>
 
 <div id="app">
+    <div id="vpn-warning" class="vpn-notice">
+        ⚠️ VPN Required!<br>USA, UK বা Canada কানেক্ট না করলে কাজ করতে পারবেন না।
+    </div>
+    
     <header class="profile-header">
         <img id="user-photo" src="https://via.placeholder.com/60">
         <div class="user-details">
@@ -41,7 +46,7 @@ body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
         </div>
     </header>
 
-    <main>
+    <main id="main-content" style="display:none;">
         <div id="home-page" class="page active">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                 <div class="stat-card"><h3>Slot</h3><p id="slot-text">0/25</p></div>
@@ -58,26 +63,25 @@ body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
             <div class="task-container">
                 <i class="fas fa-video" style="font-size:3rem; color:var(--primary); margin-bottom:10px;"></i>
                 <h3>Watch Ad (0.10 TK)</h3>
-                <p id="cooldown-text" style="color:#ff4500; font-size:0.9rem;"></p>
-                <button id="watch-ad-btn" class="action-btn">Start Task</button>
+                <p id="cooldown-text" style="color:#ff4500; font-size:0.8rem;"></p>
+                <button id="watch-ad-btn" class="action-btn">Start Video Ad</button>
             </div>
             <div class="task-container">
                 <i class="fab fa-telegram" style="font-size:3rem; color:#24A1DE; margin-bottom:10px;"></i>
                 <h3>Join Channel</h3>
-                <button id="join-btn" class="action-btn" style="background:#24A1DE;">Join & Claim (2 TK)</button>
+                <button id="join-btn" class="action-btn" style="background:#24A1DE;">Join (2 TK)</button>
             </div>
         </div>
 
         <div id="withdraw-page" class="page">
             <h3>Withdraw</h3>
-            <p style="color:#8e8e93; margin-bottom:15px;">মিনিমাম উইথড্র: ৪০ টাকা</p>
             <select id="method" class="input-box">
                 <option value="Bkash">Bkash</option>
                 <option value="Nagad">Nagad</option>
             </select>
             <input type="text" id="acc-num" placeholder="বিকাশ/নগদ নাম্বার" class="input-box">
-            <input type="number" id="w-amount" placeholder="অ্যামাউন্ট (যেমন: ৫০)" class="input-box">
-            <button class="action-btn" onclick="requestWithdraw()">উইথড্র রিকোয়েস্ট পাঠান</button>
+            <input type="number" id="w-amount" placeholder="অ্যামাউন্ট" class="input-box">
+            <button class="action-btn" onclick="requestWithdraw()">Confirm Withdraw</button>
         </div>
     </main>
 
@@ -90,8 +94,8 @@ body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 
 <div id="loading-modal" class="modal">
     <div class="modal-content">
-        <h3 id="step-title">Step 1: Monetag Ad</h3>
-        <p id="timer-text" style="font-size:1.3rem; margin:20px 0; font-weight:bold;">অপেক্ষা করুন: 15s</p>
+        <h3 id="step-title">Step 1: Ad Loading...</h3>
+        <p id="timer-text" style="font-size:1.3rem; margin:20px 0; font-weight:bold;">15s</p>
         <button id="continue-btn" class="action-btn">Continue to Step 2</button>
     </div>
 </div>
@@ -102,12 +106,29 @@ body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 
 <script>
 const tg = window.Telegram.WebApp;
-const MONETAG_LINK = "https://otieu.com/4/10512972";
-const CHANNEL_LINK = "https://t.me/Incometipsbb";
+const MONETAG_LINK = "https://otieu.com/4/10512972"; 
 const ADMIN_ID = "7677039712";
 const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
 
 let state = JSON.parse(localStorage.getItem('user_data')) || { points: 0, ads: 0, total: 0, time: 0, joined: false };
+
+// VPN Check Function
+async function checkVPN() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        const allowed = ['US', 'GB', 'CA', 'AU', 'DE', 'FR']; 
+        if (allowed.includes(data.country_code)) {
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('vpn-warning').style.display = 'none';
+        } else {
+            document.getElementById('vpn-warning').style.display = 'block';
+            tg.showAlert("USA/UK/Canada VPN কানেক্ট করে অ্যাপটি রিস্টার্ট দিন!");
+        }
+    } catch (e) {
+        document.getElementById('main-content').style.display = 'block'; 
+    }
+}
 
 function updateUI() {
     document.getElementById('user-points').innerText = state.points.toFixed(2);
@@ -117,7 +138,7 @@ function updateUI() {
     const now = Date.now();
     if(state.ads >= 25 && (now - state.time < 10800000)) {
         let diff = Math.ceil((10800000 - (now - state.time)) / 60000);
-        document.getElementById('cooldown-text').innerText = `আবার দেখা যাবে ${diff} মিনিট পর`;
+        document.getElementById('cooldown-text').innerText = `${diff} মিনিট পর আবার আসবে`;
         document.getElementById('watch-ad-btn').disabled = true;
     } else {
         if(state.ads >= 25) state.ads = 0;
@@ -135,58 +156,65 @@ if(u) {
     document.getElementById('ref-link').value = "https://t.me/globalearningbdbot?start=" + u.id;
 }
 
+// Watch Ad Logic (15s + 15s)
 document.getElementById('watch-ad-btn').onclick = () => {
-    if(state.total >= 100) return tg.showAlert("ডেইলি লিমিট শেষ!");
+    if(state.total >= 100) return tg.showAlert("আজকের ১০০টি অ্যাড দেখা শেষ!");
     const modal = document.getElementById('loading-modal');
     const timer = document.getElementById('timer-text');
     const btn = document.getElementById('continue-btn');
+    
     modal.style.display = 'flex'; btn.style.display = 'none';
     let s = 15;
-    show_10506581().catch(()=>{});
+    
+    show_10506581().catch(()=>{}); 
+
     const t1 = setInterval(() => {
         s--; timer.innerText = `অপেক্ষা করুন: ${s}s`;
-        if(s <= 0) { clearInterval(t1); timer.innerText = "Step 1 Done!"; btn.style.display = 'block'; }
+        if(s <= 0) { 
+            clearInterval(t1); 
+            timer.innerText = "Step 1 সফল!"; 
+            btn.style.display = 'block'; 
+        }
     }, 1000);
+
     btn.onclick = () => {
         window.open(MONETAG_LINK, '_blank');
         btn.style.display = 'none';
+        document.getElementById('step-title').innerText = "Step 2: ভেরিফিকেশন";
         let s2 = 15;
         const t2 = setInterval(() => {
             s2--; timer.innerText = `ভেরিফাই হচ্ছে: ${s2}s`;
             if(s2 <= 0) {
                 clearInterval(t2); modal.style.display = 'none';
-                state.points += 0.10; state.ads++; state.total++;
+                state.points += 0.10; // ১০ পয়সা রেট
+                state.ads++; state.total++;
                 if(state.ads === 25) state.time = Date.now();
-                updateUI(); tg.showAlert("০.১০ টাকা যোগ হয়েছে!");
+                updateUI();
+                show_10506581('pop').catch(()=>{}); 
+                tg.showAlert("অভিনন্দন! ০.১০ টাকা যোগ হয়েছে।");
             }
         }, 1000);
     };
-};
-
-document.getElementById('join-btn').onclick = () => {
-    tg.openTelegramLink(CHANNEL_LINK);
-    if(!state.joined) { state.points += 2; state.joined = true; updateUI(); tg.showAlert("২ টাকা বোনাস!"); }
 };
 
 async function requestWithdraw() {
     const amount = parseFloat(document.getElementById('w-amount').value);
     const acc = document.getElementById('acc-num').value;
     const method = document.getElementById('method').value;
-    
     if(!amount || amount < 40) return tg.showAlert("মিনিমাম ৪০ টাকা!");
-    if(amount > state.points) return tg.showAlert("পর্যাপ্ত ব্যালেন্স নেই!");
+    if(amount > state.points) return tg.showAlert("ব্যালেন্স নেই!");
     if(!acc) return tg.showAlert("নাম্বার দিন!");
 
-    const msg = `💰 Withdraw Request\n👤 Name: ${u.first_name}\n📱 Method: ${method}\n📞 Acc: ${acc}\n💵 Amount: ${amount} TK`;
-    
+    const msg = `💰 Withdraw Request\n👤 Name: ${u.first_name}\n💳 Method: ${method}\n📞 Number: ${acc}\n💵 Amount: ${amount} TK`;
     try {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ chat_id: ADMIN_ID, text: msg })
         });
-        state.points -= amount; updateUI(); tg.showAlert("রিকোয়েস্ট পাঠানো হয়েছে!");
-    } catch(e) { tg.showAlert("Error sending request!"); }
+        state.points -= amount; updateUI(); 
+        tg.showAlert("রিকোয়েস্ট পাঠানো হয়েছে!");
+    } catch(e) { tg.showAlert("Error!"); }
 }
 
 document.querySelectorAll('.nav-btn').forEach(b => {
@@ -204,6 +232,7 @@ function copyRef() {
 }
 
 updateUI();
+checkVPN(); // ভিপিএন চেক শুরু
 </script>
 </body>
 </html>
