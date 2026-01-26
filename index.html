@@ -3,122 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Earn & Reward App</title>
+<title>Global Earning BD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 :root {
 --font-family: 'Nunito', sans-serif;
 --bg-color-dark: #121212; --secondary-bg-dark: #1c1c1e; --text-color-dark: #ffffff;
 --subtle-text-dark: #8e8e93; --primary-color-dark: #0a84ff; --border-color-dark: #38383a;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: var(--font-family); background-color: var(--bg-color-dark); color: var(--text-color-dark); transition: background-color 0.3s, color 0.3s; }
-#app { max-width: 500px; margin: 0 auto; padding-bottom: 70px; }
+body { font-family: var(--font-family); background-color: var(--bg-color-dark); color: var(--text-color-dark); overflow-x: hidden; }
+#app { max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
 .profile-header { padding: 20px 15px; display: flex; align-items: center; border-bottom: 1px solid var(--border-color-dark); }
-.profile-info { display: flex; align-items: center; gap: 15px; }
-#user-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color-dark); }
-.user-details h1 { font-size: 1.2rem; font-weight: 700; }
-.verified-icon { font-size: 1rem; margin-left: 5px; color: var(--primary-color-dark); }
-.user-details p { font-size: 0.9rem; font-weight: 600; }
-main { padding: 15px; }
-.page { display: none; }
-.page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-.stat-card { padding: 20px; border-radius: 12px; text-align: center; background-color: var(--secondary-bg-dark); border: 1px solid var(--border-color-dark); }
-.stat-card p { font-size: 1.5rem; font-weight: 700; color: var(--primary-color-dark); }
-.referral-section { margin-top: 30px; padding: 20px; border-radius: 12px; background-color: var(--secondary-bg-dark); text-align: center; }
-#referral-link { width: 100%; padding: 10px; text-align: center; border: 1px dashed var(--primary-color-dark); border-radius: 8px; margin: 10px 0; background: none; color: white; }
-#copy-ref-link-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; color: #fff; background-color: var(--primary-color-dark); font-weight: 600; cursor: pointer; }
-.task-container { padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; background-color: var(--secondary-bg-dark); }
-.task-icon { font-size: 3rem; margin-bottom: 15px; color: var(--primary-color-dark); }
-.action-btn { width: 100%; padding: 15px; font-size: 1rem; font-weight: 700; color: #fff; border: none; border-radius: 10px; cursor: pointer; background-color: var(--primary-color-dark); }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 500px; margin: 0 auto; display: flex; justify-content: space-around; padding: 5px 0; background-color: var(--secondary-bg-dark); border-top: 1px solid var(--border-color-dark); }
-.nav-btn { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--subtle-text-dark); flex-grow: 1; }
-.nav-btn i { font-size: 1.4rem; margin-bottom: 3px; }
+#user-photo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--primary-color-dark); object-fit: cover; margin-right: 15px; }
+.user-details h1 { font-size: 1.1rem; font-weight: 700; }
+.page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+.stat-card { padding: 20px; border-radius: 12px; text-align: center; background: var(--secondary-bg-dark); border: 1px solid var(--border-color-dark); }
+.stat-card p { font-size: 1.4rem; font-weight: 700; color: var(--primary-color-dark); }
+.task-container { padding: 25px; border-radius: 15px; text-align: center; background: var(--secondary-bg-dark); border: 1px solid var(--border-color-dark); margin-bottom: 20px; }
+.action-btn { width: 100%; padding: 15px; font-size: 1rem; font-weight: 700; color: #fff; border: none; border-radius: 10px; cursor: pointer; background: var(--primary-color-dark); transition: 0.3s; }
+.action-btn:disabled { background: #555; cursor: not-allowed; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 500px; margin: 0 auto; display: flex; justify-content: space-around; padding: 10px 0; background: var(--secondary-bg-dark); border-top: 1px solid var(--border-color-dark); z-index: 1000; }
+.nav-btn { background: none; border: none; color: var(--subtle-text-dark); font-size: 0.75rem; cursor: pointer; text-align: center; }
 .nav-btn.active { color: var(--primary-color-dark); font-weight: 700; }
-.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-.modal-content { padding: 30px; border-radius: 15px; text-align: center; background-color: var(--secondary-bg-dark); color: white; border: 1px solid var(--primary-color-dark); }
-#continue-btn { display: none; margin-top: 15px; background-color: #28a745; }
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
+.modal-content { padding: 30px; border-radius: 20px; text-align: center; background: var(--secondary-bg-dark); border: 1px solid var(--primary-color-dark); width: 85%; }
+#continue-btn { display: none; background: #28a745; margin-top: 15px; }
 </style>
 </head>
-<body class="dark-theme">
+<body>
 
 <div id="app">
     <header class="profile-header">
-        <div class="profile-info">
-            <img id="user-photo" src="https://via.placeholder.com/60" alt="User Photo">
-            <div class="user-details">
-                <h1 id="user-name">Loading... <i class="fas fa-check-circle verified-icon"></i></h1>
-                <p>Balance: <span id="user-points">0.00</span> TK</p>
-            </div>
+        <img id="user-photo" src="https://via.placeholder.com/60">
+        <div class="user-details">
+            <h1 id="user-name">Loading... <i class="fas fa-check-circle" style="color:var(--primary-color-dark);"></i></h1>
+            <p>Balance: <span id="user-points">0.00</span> TK</p>
         </div>
     </header>
 
-    <main id="main-content">
+    <main>
         <div id="home-page" class="page active">
-            <h2>Dashboard</h2>
             <div class="stats-grid">
-                <div class="stat-card"><h3>Ads (Slot)</h3><p><span id="daily-ads-watched">0</span>/25</p></div>
-                <div class="stat-card"><h3>Referrals</h3><p id="referral-count">0</p></div>
+                <div class="stat-card"><h3>Ads (Slot)</h3><p id="slot-text">0/25</p></div>
+                <div class="stat-card"><h3>Total Ads</h3><p id="total-ads-text">0</p></div>
             </div>
-            <div class="referral-section">
-                <h3>Refer & Earn!</h3>
-                <p style="font-size: 0.8rem; margin-bottom: 5px; color: #00ff00;">প্রতি রেফারে পাবেন ২ টাকা বোনাস!</p>
-                <input type="text" id="referral-link" readonly>
-                <button id="copy-ref-link-btn">Copy Link</button>
+            <div class="stat-card" style="margin-top:20px;">
+                <h3>Refer & Earn</h3>
+                <p style="font-size:0.8rem; color:#00ff00; margin:10px 0;">প্রতি রেফারে ২ টাকা বোনাস!</p>
+                <input type="text" id="ref-link" readonly style="width:100%; padding:10px; background:none; border:1px dashed #555; color:#fff; text-align:center; border-radius:8px;">
+                <button class="action-btn" style="margin-top:10px;" onclick="copyRef()">Copy Link</button>
             </div>
         </div>
 
         <div id="tasks-page" class="page">
-            <h2>Tasks</h2>
             <div class="task-container">
-                <i class="fas fa-video task-icon"></i>
-                <h3>Watch Rewarded Ad</h3>
-                <p>Earn 0.15 TK (Step 1 + Step 2)</p>
-                <button id="watch-ad-btn" class="action-btn">Watch Ad</button>
+                <i class="fas fa-video" style="font-size:3rem; color:var(--primary-color-dark); margin-bottom:15px;"></i>
+                <h3>Watch Ad (0.10 TK)</h3>
+                <p id="cooldown-timer" style="color:#ff4500; font-size:0.9rem; margin-bottom:10px;"></p>
+                <button id="watch-ad-btn" class="action-btn">Start Task</button>
             </div>
             <div class="task-container">
-                <i class="fab fa-telegram task-icon"></i>
+                <i class="fab fa-telegram" style="font-size:3rem; color:#24A1DE; margin-bottom:15px;"></i>
                 <h3>Join Channel</h3>
-                <p>Get 2 TK bonus.</p>
-                <button id="join-channel-btn" class="action-btn">Join & Claim</button>
+                <p>Get 2.00 TK Reward</p>
+                <button id="join-btn" class="action-btn" style="background:#24A1DE;">Join & Claim</button>
             </div>
         </div>
 
         <div id="withdraw-page" class="page">
-            <h2>Withdraw</h2>
-            <p>Min Withdraw: 40 TK</p>
-            <form id="withdraw-form" style="margin-top:15px;">
-                <select id="withdraw-method" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; background: #2c2c2e; color: white;">
-                    <option value="Bkash">Bkash</option>
-                    <option value="Nagad">Nagad</option>
-                </select>
-                <input type="text" id="account-number" placeholder="Account Number" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; background: #2c2c2e; color: white; border: none;" required>
-                <input type="number" id="amount" placeholder="Amount" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; background: #2c2c2e; color: white; border: none;" required>
-                <button type="submit" id="withdraw-submit-btn" class="action-btn">Submit Request</button>
-            </form>
+            <h3>Withdraw Balance</h3>
+            <p style="margin-bottom:15px; color:var(--subtle-text-dark);">Min: 40 TK</p>
+            <input type="text" id="acc-num" placeholder="Bkash/Nagad Number" style="width:100%; padding:15px; border-radius:10px; background:#2c2c2e; border:none; color:#fff; margin-bottom:10px;">
+            <input type="number" id="w-amount" placeholder="Amount" style="width:100%; padding:15px; border-radius:10px; background:#2c2c2e; border:none; color:#fff; margin-bottom:15px;">
+            <button class="action-btn" onclick="requestWithdraw()">Withdraw Now</button>
         </div>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-btn active" data-page="home-page"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-btn" data-page="tasks-page"><i class="fas fa-tasks"></i><span>Tasks</span></button>
-        <button class="nav-btn" data-page="withdraw-page"><i class="fas fa-wallet"></i><span>Withdraw</span></button>
+        <button class="nav-btn active" data-page="home-page"><i class="fas fa-home"></i><br>Home</button>
+        <button class="nav-btn" data-page="tasks-page"><i class="fas fa-tasks"></i><br>Tasks</button>
+        <button class="nav-btn" data-page="withdraw-page"><i class="fas fa-wallet"></i><br>Wallet</button>
     </nav>
 </div>
 
 <div id="loading-modal" class="modal">
     <div class="modal-content">
-        <h3 id="modal-step-title" style="color:#0a84ff; margin-bottom:10px;">Step 1: Monetag Ad</h3>
-        <p id="loading-text" style="font-size: 1.2rem; font-weight: bold;">Loading Ad...</p>
+        <h3 id="modal-step-title" style="color:var(--primary-color-dark);">Step 1: Monetag Ad</h3>
+        <p id="timer-text" style="font-size:1.3rem; margin:20px 0; font-weight:bold;">অপেক্ষা করুন: 15s</p>
         <button id="continue-btn" class="action-btn">Continue to Step 2</button>
-        <p style="font-size: 0.8rem; margin-top: 10px; color: var(--subtle-text-dark);">টাকা পেতে পুরো সময় অপেক্ষা করুন</p>
+        <p style="font-size:0.8rem; color:#8e8e93; margin-top:15px;">পুরো সময় না দেখলে টাকা যোগ হবে না</p>
     </div>
 </div>
 
@@ -127,109 +108,132 @@ main { padding: 15px; }
 <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
+const tg = window.Telegram.WebApp;
+const MONETAG_LINK = "https://otieu.com/4/10512972";
+const CHANNEL_LINK = "https://t.me/Incometipsbb";
 
-    const MONETAG_DIRECT_LINK = "https://otieu.com/4/10512972"; 
-    const CHANNEL_LINK = "https://t.me/Incometipsbb";
-    const POINTS_PER_AD = 0.15;
+// State Management
+let state = JSON.parse(localStorage.getItem('globalData')) || {
+    points: 0,
+    adsInSlot: 0,
+    totalAds: 0,
+    lastSlotTime: 0,
+    joined: false
+};
 
-    let userState = { points: 0, ads: 0, joined: false };
+function save() { localStorage.setItem('globalData', JSON.stringify(state)); }
 
-    // Update UI with User Info
-    const updateUI = () => {
-        const user = tg.initDataUnsafe.user;
-        if(user) {
-            document.getElementById('user-name').innerText = user.first_name;
-            document.getElementById('user-photo').src = user.photo_url || 'https://via.placeholder.com/60';
-            document.getElementById('referral-link').value = "https://t.me/globalearningbdbot?start=" + user.id;
+function updateUI() {
+    document.getElementById('user-points').innerText = state.points.toFixed(2);
+    document.getElementById('slot-text').innerText = state.adsInSlot + "/25";
+    document.getElementById('total-ads-text').innerText = state.totalAds;
+    
+    // Cooldown Check
+    const now = Date.now();
+    const cooldown = 3 * 60 * 60 * 1000;
+    if(state.adsInSlot >= 25 && (now - state.lastSlotTime < cooldown)) {
+        const rem = Math.ceil((cooldown - (now - state.lastSlotTime)) / 60000);
+        document.getElementById('cooldown-timer').innerText = `আবার দেখা যাবে: ${rem} মিনিট পর`;
+        document.getElementById('watch-ad-btn').disabled = true;
+    } else {
+        if(state.adsInSlot >= 25) state.adsInSlot = 0;
+        document.getElementById('cooldown-timer').innerText = "";
+        document.getElementById('watch-ad-btn').disabled = false;
+    }
+}
+
+// Telegram User
+tg.ready();
+tg.expand();
+const user = tg.initDataUnsafe.user;
+if(user) {
+    document.getElementById('user-name').innerText = user.first_name;
+    document.getElementById('user-photo').src = user.photo_url || 'https://via.placeholder.com/60';
+    document.getElementById('ref-link').value = "https://t.me/globalearningbdbot?start=" + user.id;
+}
+
+// Watch Ad Logic
+document.getElementById('watch-ad-btn').onclick = () => {
+    if(state.totalAds >= 100) return tg.showAlert("আজকের ১০০টির লিমিট শেষ!");
+
+    const modal = document.getElementById('loading-modal');
+    const timer = document.getElementById('timer-text');
+    const contBtn = document.getElementById('continue-btn');
+    const step = document.getElementById('modal-step-title');
+
+    modal.style.display = 'flex';
+    contBtn.style.display = 'none';
+    step.innerText = "Step 1: Monetag Ad";
+    
+    let time = 15;
+    show_10506581().catch(()=>{});
+
+    const t1 = setInterval(() => {
+        time--;
+        timer.innerText = "অপেক্ষা করুন: " + time + "s";
+        if(time <= 0) {
+            clearInterval(t1);
+            timer.innerText = "Step 1 শেষ!";
+            contBtn.style.display = 'block';
         }
-        document.getElementById('user-points').innerText = userState.points.toFixed(2);
-        document.getElementById('daily-ads-watched').innerText = userState.ads;
-    };
+    }, 1000);
 
-    // Watch Ad Logic (15s + 15s)
-    document.getElementById('watch-ad-btn').onclick = () => {
-        const modal = document.getElementById('loading-modal');
-        const text = document.getElementById('loading-text');
-        const contBtn = document.getElementById('continue-btn');
-        const stepTitle = document.getElementById('modal-step-title');
-
-        modal.style.display = 'flex';
+    contBtn.onclick = () => {
+        window.open(MONETAG_LINK, '_blank');
         contBtn.style.display = 'none';
-        stepTitle.innerText = "Step 1: Monetag Ad";
-        
-        let timeLeft = 15;
-        text.innerText = `অপেক্ষা করুন: ${timeLeft}s`;
-
-        show_10506581().catch(()=>{}); // Interstitial/Popup call
-
-        const timer1 = setInterval(() => {
-            timeLeft--;
-            text.innerText = `অপেক্ষা করুন: ${timeLeft}s`;
-            if(timeLeft <= 0) {
-                clearInterval(timer1);
-                text.innerText = "Step 1 শেষ! নিচে ক্লিক করুন।";
-                contBtn.style.display = 'block';
+        step.innerText = "Step 2: Verification";
+        let time2 = 15;
+        const t2 = setInterval(() => {
+            time2--;
+            timer.innerText = "ভেরিফাই হচ্ছে: " + time2 + "s";
+            if(time2 <= 0) {
+                clearInterval(t2);
+                modal.style.display = 'none';
+                state.points += 0.10;
+                state.adsInSlot++;
+                state.totalAds++;
+                if(state.adsInSlot === 25) state.lastSlotTime = Date.now();
+                save(); updateUI();
+                show_10506581('pop').catch(()=>{});
+                tg.showAlert("সফল! ০.১০ টাকা যোগ হয়েছে।");
             }
         }, 1000);
-
-        contBtn.onclick = () => {
-            window.open(MONETAG_DIRECT_LINK, '_blank');
-            contBtn.style.display = 'none';
-            stepTitle.innerText = "Step 2: Verification";
-            let timeLeft2 = 15;
-            text.innerText = `ভেরিফাই হচ্ছে: ${timeLeft2}s`;
-
-            const timer2 = setInterval(() => {
-                timeLeft2--;
-                text.innerText = `ভেরিফাই হচ্ছে: ${timeLeft2}s`;
-                if(timeLeft2 <= 0) {
-                    clearInterval(timer2);
-                    modal.style.display = 'none';
-                    userState.points += POINTS_PER_AD;
-                    userState.ads++;
-                    updateUI();
-                    show_10506581('pop').catch(()=>{}); // End-task Popup
-                    tg.showAlert(`অভিনন্দন! ${POINTS_PER_AD} টাকা যোগ হয়েছে।`);
-                }
-            }, 1000);
-        };
     };
+};
 
-    // Join Channel Logic
-    document.getElementById('join-channel-btn').onclick = () => {
-        tg.openTelegramLink(CHANNEL_LINK);
-        if(!userState.joined) {
-            userState.points += 2.0;
-            userState.joined = true;
-            updateUI();
-            tg.showAlert("২ টাকা বোনাস যোগ হয়েছে!");
-        }
+// Join Channel
+document.getElementById('join-btn').onclick = () => {
+    tg.openTelegramLink(CHANNEL_LINK);
+    if(!state.joined) {
+        state.points += 2.0; state.joined = true;
+        save(); updateUI(); tg.showAlert("২ টাকা বোনাস পেয়েছেন!");
+    }
+};
+
+// Navigation
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(btn.dataset.page).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
     };
-
-    // Copy Referral Link
-    document.getElementById('copy-ref-link-btn').onclick = () => {
-        const link = document.getElementById('referral-link');
-        link.select();
-        document.execCommand('copy');
-        tg.showAlert("Link Copied!");
-    };
-
-    // Navigation
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(btn.dataset.page).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        };
-    });
-
-    updateUI();
 });
+
+function copyRef() {
+    document.getElementById('ref-link').select();
+    document.execCommand('copy');
+    tg.showAlert("লিঙ্ক কপি হয়েছে!");
+}
+
+function requestWithdraw() {
+    const amount = document.getElementById('w-amount').value;
+    if(amount < 40) return tg.showAlert("মিনিমাম ৪০ টাকা লাগবে!");
+    tg.showAlert("উইথড্র রিকোয়েস্ট পাঠানো হয়েছে!");
+}
+
+updateUI();
+setInterval(updateUI, 60000); // প্রতি মিনিটে কুলডাউন আপডেট হবে
 </script>
 </body>
 </html>
