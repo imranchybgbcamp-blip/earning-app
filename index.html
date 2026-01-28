@@ -3,63 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Global Earning BD - Verified App</title>
+    <title>Global Earning BD - Premium Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    
     <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
+    
     <style>
-        :root { --primary: #4285F4; --bg: #0f172a; --card: #1e293b; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        :root { --primary: #3b82f6; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #10b981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; }
+
+        /* Splash Screen */
+        #splash { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
+        .loader { width: 50px; height: 50px; border: 5px solid #334155; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* App Layout */
+        .app-container { display: flex; flex-direction: column; height: 100vh; max-width: 500px; margin: 0 auto; background: var(--bg); position: relative; }
+        .header { padding: 20px; background: var(--card); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; }
+        .user-meta { display: flex; align-items: center; gap: 12px; }
+        #u-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
         
-        /* Login Screen Styles */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .google-btn { background: white; color: #444; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; border: none; gap: 10px; font-size: 1rem; }
+        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 160px; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards & Buttons */
+        .balance-card { background: linear-gradient(135deg, #1d4ed8, #3b82f6); padding: 25px; border-radius: 24px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+        .balance-card h2 { font-size: 2.5rem; margin: 10px 0; }
         
-        .main-app { display: none; padding-bottom: 80px; }
-        .header { background: var(--card); padding: 20px; border-bottom: 3px solid var(--primary); display: flex; align-items: center; gap: 15px; }
-        .u-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); }
-        .card { background: var(--card); margin: 15px; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
-        .balance { font-size: 2.5rem; font-weight: bold; color: var(--primary); margin: 10px 0; }
-        .btn-action { background: var(--primary); color: white; width: 90%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
-        .input-box { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
+        .task-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
+        .task-card:active { transform: scale(0.97); background: #2d3a4f; }
+        .task-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem; }
+
+        .btn-withdraw { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: bold; font-size: 1rem; margin-top: 10px; cursor: pointer; }
+        .input-box { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 12px; outline: none; }
+
+        /* Bottom Nav */
+        .nav { position: absolute; bottom: 70px; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; z-index: 100; }
+        .nav-item { color: #94a3b8; text-align: center; font-size: 0.75rem; cursor: pointer; flex: 1; }
+        .nav-item.active { color: var(--primary); }
+        
+        /* Banner Ad Area */
+        .ad-footer { position: absolute; bottom: 0; width: 100%; height: 70px; background: #000; display: flex; justify-content: center; align-items: center; border-top: 1px solid var(--primary); z-index: 101; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <i class="fas fa-shield-halved" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
-        <h2>Welcome Back</h2>
-        <p>নিরাপদ আর্নিং এর জন্য লগইন করুন</p>
-        <button class="google-btn" onclick="handleLogin()">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
-            Login with Telegram Account
-        </button>
+    <div id="splash">
+        <h1 style="margin-bottom: 20px; letter-spacing: 2px;">GLOBAL EARNING</h1>
+        <div class="loader"></div>
     </div>
 
-    <div id="app-content" class="main-app">
-        <div class="header">
-            <img id="pfp" class="u-img" src="">
-            <div style="text-align: left;">
-                <h3 id="name" style="margin:0;">User Name</h3>
-                <p id="id-tag" style="margin:0; font-size: 0.8rem; color: #94a3b8;">ID: 000000</p>
+    <div class="app-container">
+        <header class="header">
+            <div class="user-meta">
+                <img id="u-img" src="https://via.placeholder.com/45">
+                <div>
+                    <h4 id="u-name">User</h4>
+                    <p id="u-id" style="font-size: 0.7rem; color: var(--primary);">ID: 000000</p>
+                </div>
+            </div>
+            <i class="fas fa-bell" style="font-size: 1.2rem; color: #94a3b8;"></i>
+        </header>
+
+        <div class="content">
+            <div id="home" class="page active">
+                <div class="balance-card">
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Available Balance</p>
+                    <h2>৳ <span id="balance">0.00</span></h2>
+                    <p style="font-size: 0.8rem; background: rgba(0,0,0,0.2); display: inline-block; padding: 4px 12px; border-radius: 20px;">Verified Account</p>
+                </div>
+
+                <h3 style="margin-bottom: 15px;">Daily Tasks</h3>
+                <div class="task-card" onclick="runMonetagAd()">
+                    <div class="task-icon"><i class="fas fa-play"></i></div>
+                    <div style="flex: 1;">
+                        <h4>Watch Video</h4>
+                        <p style="font-size: 0.8rem; color: #94a3b8;">Earn 0.05 TK per view</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
+                </div>
+
+                <div class="task-card" onclick="window.open('https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08', '_blank')">
+                    <div class="task-icon" style="color: #f59e0b;"><i class="fas fa-bolt"></i></div>
+                    <div style="flex: 1;">
+                        <h4>Smart Link Task</h4>
+                        <p style="font-size: 0.8rem; color: #94a3b8;">High CPM Ad Server</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
+                </div>
+            </div>
+
+            <div id="wallet" class="page">
+                <h3 style="margin-bottom: 20px;">Cash Out</h3>
+                <div style="background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155;">
+                    <label style="font-size: 0.8rem; color: #94a3b8;">Select Method</label>
+                    <select class="input-box" id="method" style="margin-top: 5px;">
+                        <option value="Bkash">Bkash</option>
+                        <option value="Nagad">Nagad</option>
+                    </select>
+                    <input type="text" id="w-num" class="input-box" placeholder="Phone Number">
+                    <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
+                    <button class="btn-withdraw" onclick="handleWithdraw()">REQUEST WITHDRAW</button>
+                </div>
+                <p style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">Payment takes 1-24 hours.</p>
             </div>
         </div>
 
-        <div class="card">
-            <h3>Your Wallet</h3>
-            <div class="balance">৳ <span id="bal-text">0.00</span></div>
-        </div>
+        <nav class="nav">
+            <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home fa-lg"></i><br>Home</div>
+            <div class="nav-item" onclick="showPage('wallet', this)"><i class="fas fa-wallet fa-lg"></i><br>Wallet</div>
+            <div class="nav-item" onclick="tg.showAlert('Coming Soon!')"><i class="fas fa-users fa-lg"></i><br>Invite</div>
+        </nav>
 
-        <div class="card">
-            <i class="fas fa-video" style="font-size: 2rem; color: #ff4757;"></i>
-            <h3>Watch & Earn</h3>
-            <button class="btn-action" onclick="playAd()">START TASK</button>
-        </div>
-
-        <div class="card">
-            <h3>Withdraw</h3>
-            <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
-            <input type="text" id="w-num" class="input-box" placeholder="Bkash/Nagad Number">
-            <button class="btn-action" style="background: #2ed573;" onclick="withdraw()">Withdraw Request</button>
+        <div class="ad-footer">
+            <script type="text/javascript">
+                atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/844fbcd18257b08f493940b654828c18/invoke.js"></script>
         </div>
     </div>
 
@@ -70,61 +133,263 @@
         const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
         const ADMIN_ID = "7677039712";
 
-        let currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+        let balance = parseFloat(localStorage.getItem('user_balance')) || 0;
 
-        function handleLogin() {
+        // Initialize App
+        window.onload = () => {
             if(user) {
-                // লগইন সফল হলে স্ক্রিন হাইড হবে
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                
-                // ডাটা সেট করা
-                document.getElementById('name').innerText = user.first_name;
-                document.getElementById('id-tag').innerText = "ID: " + user.id;
-                document.getElementById('pfp').src = user.photo_url || "https://ui-avatars.com/api/?name=" + user.first_name;
-                document.getElementById('bal-text').innerText = currentBalance.toFixed(2);
-            } else {
-                tg.showAlert("দয়া করে টেলিগ্রাম অ্যাপ থেকে ওপেন করুন।");
+                document.getElementById('u-name').innerText = user.first_name;
+                document.getElementById('u-id').innerText = "UID: " + user.id;
+                document.getElementById('u-img').src = user.photo_url || "https://ui-avatars.com/api/?background=3b82f6&color=fff&name="+user.first_name;
             }
+            document.getElementById('balance').innerText = balance.toFixed(2);
+            
+            // Auto-trigger Monetag In-App Ads
+            show_10506581({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
+
+            setTimeout(() => { document.getElementById('splash').style.opacity = '0'; setTimeout(() => document.getElementById('splash').remove(), 500); }, 1500);
+        };
+
+        function showPage(pageId, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        function playAd() {
+        // Ad Task with Monetag Reward
+        function runMonetagAd() {
             show_10506581().then(() => {
-                currentBalance += 0.05;
-                saveData();
-                tg.showAlert("০.০৫ টাকা যোগ হয়েছে!");
+                rewardUser(0.05);
+                tg.showAlert("Success! 0.05 TK added.");
             }).catch(() => {
-                tg.showAlert("অ্যাড লোড হয়নি। আবার চেষ্টা করুন।");
+                tg.showAlert("Ad failed to load. Try again later.");
             });
         }
 
-        function saveData() {
-            localStorage.setItem('balance', currentBalance);
-            document.getElementById('bal-text').innerText = currentBalance.toFixed(2);
+        function rewardUser(amt) {
+            balance += amt;
+            localStorage.setItem('user_balance', balance);
+            document.getElementById('balance').innerText = balance.toFixed(2);
         }
 
-        async function withdraw() {
+        async function handleWithdraw() {
             const amt = document.getElementById('w-amt').value;
             const num = document.getElementById('w-num').value;
+            const method = document.getElementById('method').value;
 
-            if(!amt || amt < 40 || amt > currentBalance || !num) {
-                return tg.showAlert("সঠিক তথ্য দিন অথবা পর্যাপ্ত ব্যালেন্স নেই!");
-            }
+            if(!amt || amt < 40 || amt > balance || !num) return tg.showAlert("Invalid data or low balance!");
 
-            const text = encodeURIComponent(`💰 New Withdrawal!\n\nUser: ${user.first_name}\nID: ${user.id}\nAmount: ${amt} TK\nNumber: ${num}`);
+            const text = encodeURIComponent(`💰 Withdraw Request!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nNumber: ${num}\nAmount: ${amt} TK`);
             
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
-                currentBalance -= amt;
-                saveData();
-                tg.showAlert("রিকোয়েস্ট পাঠানো হয়েছে!");
-            } catch(e) {
-                tg.showAlert("Error sending request!");
-            }
+                balance -= parseFloat(amt);
+                localStorage.setItem('user_balance', balance);
+                document.getElementById('balance').innerText = balance.toFixed(2);
+                tg.showAlert("Request sent successfully!");
+            } catch(e) { tg.showAlert("Error sending request."); }
         }
 
         tg.ready();
         tg.expand();
     </script>
 </body>
-            </html>
+                </html><!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Global Earning BD - Premium Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    
+    <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
+    
+    <style>
+        :root { --primary: #3b82f6; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #10b981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; }
+
+        /* Splash Screen */
+        #splash { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
+        .loader { width: 50px; height: 50px; border: 5px solid #334155; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* App Layout */
+        .app-container { display: flex; flex-direction: column; height: 100vh; max-width: 500px; margin: 0 auto; background: var(--bg); position: relative; }
+        .header { padding: 20px; background: var(--card); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; }
+        .user-meta { display: flex; align-items: center; gap: 12px; }
+        #u-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
+        
+        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 160px; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards & Buttons */
+        .balance-card { background: linear-gradient(135deg, #1d4ed8, #3b82f6); padding: 25px; border-radius: 24px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+        .balance-card h2 { font-size: 2.5rem; margin: 10px 0; }
+        
+        .task-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
+        .task-card:active { transform: scale(0.97); background: #2d3a4f; }
+        .task-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem; }
+
+        .btn-withdraw { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: bold; font-size: 1rem; margin-top: 10px; cursor: pointer; }
+        .input-box { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 12px; outline: none; }
+
+        /* Bottom Nav */
+        .nav { position: absolute; bottom: 70px; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; z-index: 100; }
+        .nav-item { color: #94a3b8; text-align: center; font-size: 0.75rem; cursor: pointer; flex: 1; }
+        .nav-item.active { color: var(--primary); }
+        
+        /* Banner Ad Area */
+        .ad-footer { position: absolute; bottom: 0; width: 100%; height: 70px; background: #000; display: flex; justify-content: center; align-items: center; border-top: 1px solid var(--primary); z-index: 101; }
+    </style>
+</head>
+<body>
+
+    <div id="splash">
+        <h1 style="margin-bottom: 20px; letter-spacing: 2px;">GLOBAL EARNING</h1>
+        <div class="loader"></div>
+    </div>
+
+    <div class="app-container">
+        <header class="header">
+            <div class="user-meta">
+                <img id="u-img" src="https://via.placeholder.com/45">
+                <div>
+                    <h4 id="u-name">User</h4>
+                    <p id="u-id" style="font-size: 0.7rem; color: var(--primary);">ID: 000000</p>
+                </div>
+            </div>
+            <i class="fas fa-bell" style="font-size: 1.2rem; color: #94a3b8;"></i>
+        </header>
+
+        <div class="content">
+            <div id="home" class="page active">
+                <div class="balance-card">
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Available Balance</p>
+                    <h2>৳ <span id="balance">0.00</span></h2>
+                    <p style="font-size: 0.8rem; background: rgba(0,0,0,0.2); display: inline-block; padding: 4px 12px; border-radius: 20px;">Verified Account</p>
+                </div>
+
+                <h3 style="margin-bottom: 15px;">Daily Tasks</h3>
+                <div class="task-card" onclick="runMonetagAd()">
+                    <div class="task-icon"><i class="fas fa-play"></i></div>
+                    <div style="flex: 1;">
+                        <h4>Watch Video</h4>
+                        <p style="font-size: 0.8rem; color: #94a3b8;">Earn 0.05 TK per view</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
+                </div>
+
+                <div class="task-card" onclick="window.open('https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08', '_blank')">
+                    <div class="task-icon" style="color: #f59e0b;"><i class="fas fa-bolt"></i></div>
+                    <div style="flex: 1;">
+                        <h4>Smart Link Task</h4>
+                        <p style="font-size: 0.8rem; color: #94a3b8;">High CPM Ad Server</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
+                </div>
+            </div>
+
+            <div id="wallet" class="page">
+                <h3 style="margin-bottom: 20px;">Cash Out</h3>
+                <div style="background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155;">
+                    <label style="font-size: 0.8rem; color: #94a3b8;">Select Method</label>
+                    <select class="input-box" id="method" style="margin-top: 5px;">
+                        <option value="Bkash">Bkash</option>
+                        <option value="Nagad">Nagad</option>
+                    </select>
+                    <input type="text" id="w-num" class="input-box" placeholder="Phone Number">
+                    <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
+                    <button class="btn-withdraw" onclick="handleWithdraw()">REQUEST WITHDRAW</button>
+                </div>
+                <p style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">Payment takes 1-24 hours.</p>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home fa-lg"></i><br>Home</div>
+            <div class="nav-item" onclick="showPage('wallet', this)"><i class="fas fa-wallet fa-lg"></i><br>Wallet</div>
+            <div class="nav-item" onclick="tg.showAlert('Coming Soon!')"><i class="fas fa-users fa-lg"></i><br>Invite</div>
+        </nav>
+
+        <div class="ad-footer">
+            <script type="text/javascript">
+                atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/844fbcd18257b08f493940b654828c18/invoke.js"></script>
+        </div>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe.user;
+        const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
+        const ADMIN_ID = "7677039712";
+
+        let balance = parseFloat(localStorage.getItem('user_balance')) || 0;
+
+        // Initialize App
+        window.onload = () => {
+            if(user) {
+                document.getElementById('u-name').innerText = user.first_name;
+                document.getElementById('u-id').innerText = "UID: " + user.id;
+                document.getElementById('u-img').src = user.photo_url || "https://ui-avatars.com/api/?background=3b82f6&color=fff&name="+user.first_name;
+            }
+            document.getElementById('balance').innerText = balance.toFixed(2);
+            
+            // Auto-trigger Monetag In-App Ads
+            show_10506581({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
+
+            setTimeout(() => { document.getElementById('splash').style.opacity = '0'; setTimeout(() => document.getElementById('splash').remove(), 500); }, 1500);
+        };
+
+        function showPage(pageId, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // Ad Task with Monetag Reward
+        function runMonetagAd() {
+            show_10506581().then(() => {
+                rewardUser(0.05);
+                tg.showAlert("Success! 0.05 TK added.");
+            }).catch(() => {
+                tg.showAlert("Ad failed to load. Try again later.");
+            });
+        }
+
+        function rewardUser(amt) {
+            balance += amt;
+            localStorage.setItem('user_balance', balance);
+            document.getElementById('balance').innerText = balance.toFixed(2);
+        }
+
+        async function handleWithdraw() {
+            const amt = document.getElementById('w-amt').value;
+            const num = document.getElementById('w-num').value;
+            const method = document.getElementById('method').value;
+
+            if(!amt || amt < 40 || amt > balance || !num) return tg.showAlert("Invalid data or low balance!");
+
+            const text = encodeURIComponent(`💰 Withdraw Request!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nNumber: ${num}\nAmount: ${amt} TK`);
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
+                balance -= parseFloat(amt);
+                localStorage.setItem('user_balance', balance);
+                document.getElementById('balance').innerText = balance.toFixed(2);
+                tg.showAlert("Request sent successfully!");
+            } catch(e) { tg.showAlert("Error sending request."); }
+        }
+
+        tg.ready();
+        tg.expand();
+    </script>
+</body>
+                                                                                                  </html>
