@@ -3,112 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Global Earning BD - Pro</title>
+    <title>Global Earning Pro - 16 Limit Edition</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
     <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
 
     <style>
-        :root { --primary: #8b5cf6; --secondary: #ec4899; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        :root { --primary: #6366f1; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #10b981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* Splash Screen */
         #splash { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .loader { width: 40px; height: 40px; border: 4px solid #334155; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loader { width: 45px; height: 45px; border: 5px solid #334155; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Header */
         .header { padding: 15px 20px; background: var(--card); display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #334155; }
-        .header img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); }
+        .header img { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--primary); }
 
-        .app-content { padding: 20px; padding-bottom: 100px; }
-        .page { display: none; animation: fadeIn 0.3s; }
+        .app-content { padding: 20px; padding-bottom: 120px; }
+        .page { display: none; animation: fadeIn 0.4s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Balance Card */
-        .balance-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .balance-card h2 { font-size: 2.2rem; margin: 5px 0; }
+        .balance-card { background: linear-gradient(135deg, #4f46e5, #9333ea); padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .balance-card h2 { font-size: 2.3rem; margin: 5px 0; }
 
-        /* Task Cards */
         .task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .task-item { background: var(--card); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #334155; cursor: pointer; transition: 0.2s; }
-        .task-item:active { transform: scale(0.95); }
-        .task-item i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
-        .task-item p { font-size: 0.8rem; opacity: 0.8; }
+        .task-card { background: var(--card); padding: 20px; border-radius: 18px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; position: relative; }
+        .task-card i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+        .limit-badge { position: absolute; top: 10px; right: 10px; font-size: 0.65rem; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 10px; color: var(--accent); }
 
-        /* Spinner Styles */
-        #wheel-container { position: relative; width: 250px; height: 250px; margin: 20px auto; }
-        #wheel { width: 100%; height: 100%; border-radius: 50%; border: 5px solid var(--card); transition: transform 4s cubic-bezier(0.1, 0, 0, 1); }
-        #wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 20px; height: 30px; background: red; clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; }
+        /* Spinner */
+        #wheel-box { width: 260px; height: 260px; margin: 30px auto; position: relative; }
+        #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.1, 0, 0, 1); }
+        #pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 25px; height: 35px; background: #ef4444; clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 5; }
 
-        /* Bottom Nav */
-        .nav { position: fixed; bottom: 0; width: 100%; background: var(--card); display: flex; padding: 10px 0; border-top: 1px solid #334155; }
-        .nav-item { flex: 1; text-align: center; font-size: 0.75rem; color: #94a3b8; cursor: pointer; }
+        .nav { position: fixed; bottom: 0; width: 100%; background: var(--card); display: flex; padding: 12px 0; border-top: 1px solid #334155; z-index: 100; }
+        .nav-item { flex: 1; text-align: center; font-size: 0.7rem; color: #94a3b8; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
 
-        .btn-withdraw { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 10px; }
-        .input-box { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
-
-        /* Ad Footer Area */
-        .ad-container { text-align: center; margin-top: 20px; background: #000; padding: 10px; border-radius: 10px; overflow: hidden; }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; }
+        .input-box { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; outline: none; }
+        
+        .ad-footer { text-align: center; padding: 10px; background: #000; border-radius: 10px; margin-top: 15px; overflow: hidden; }
     </style>
 </head>
 <body>
 
     <div id="splash">
-        <h2 style="margin-bottom: 15px;">GLOBAL EARNING</h2>
-        <div class="loader"></div>
+        <h2 style="letter-spacing: 2px;">GLOBAL EARNING</h2>
+        <div class="loader" style="margin-top: 20px;"></div>
     </div>
 
-    <div class="header">
-        <img id="user-img" src="https://via.placeholder.com/40">
+    <header class="header">
+        <img id="u-img" src="https://ui-avatars.com/api/?name=User">
         <div>
-            <h4 id="user-name">Guest User</h4>
-            <p id="user-id" style="font-size: 0.7rem; color: var(--primary);">ID: 000000</p>
+            <h4 id="u-name">Loading...</h4>
+            <p id="u-id" style="font-size: 0.7rem; color: var(--primary);">ID: 000000</p>
         </div>
-    </div>
+    </header>
 
     <div class="app-content">
         <div id="home" class="page active">
             <div class="balance-card">
-                <p>Available Balance</p>
-                <h2>৳ <span id="main-balance">0.00</span></h2>
+                <p style="opacity: 0.8; font-size: 0.9rem;">Total Balance</p>
+                <h2>৳ <span id="bal-text">0.00</span></h2>
             </div>
 
-            <h3 style="margin-bottom: 15px;">Tasks (0.05 TK)</h3>
+            <h3 style="margin-bottom: 15px;">Tasks (Limit: 16)</h3>
             <div class="task-grid">
-                <div class="task-item" onclick="runVideoAd()">
+                <div class="task-card" onclick="startTask('video')">
+                    <span class="limit-badge" id="limit-video">16/16</span>
                     <i class="fas fa-play-circle"></i>
-                    <h4>Watch Video</h4>
+                    <p>Video Ad</p>
                 </div>
-                <div class="task-item" onclick="showPage('spinner-page')">
+                <div class="task-card" onclick="showPage('spin-page')">
+                    <span class="limit-badge" id="limit-spin">16/16</span>
                     <i class="fas fa-dharmachakra"></i>
-                    <h4>Lucky Spin</h4>
+                    <p>Lucky Spin</p>
                 </div>
-                <div class="task-item" onclick="visitWebsite()">
-                    <i class="fas fa-eye"></i>
-                    <h4>Visit Web</h4>
+                <div class="task-card" onclick="startTask('web')">
+                    <span class="limit-badge" id="limit-web">16/16</span>
+                    <i class="fas fa-globe"></i>
+                    <p>Visit Web</p>
                 </div>
-                <div class="task-item" onclick="runPopupAd()">
-                    <i class="fas fa-ad"></i>
-                    <h4>Popup Ad</h4>
+                <div class="task-card" onclick="startTask('popup')">
+                    <span class="limit-badge" id="limit-popup">16/16</span>
+                    <i class="fas fa-window-restore"></i>
+                    <p>Popup Ad</p>
                 </div>
             </div>
 
-            <h3 style="margin: 20px 0 15px;">High Reward (0.10 TK)</h3>
-            <div class="task-item" onclick="openSmartLink()" style="display: flex; align-items: center; gap: 15px; text-align: left;">
-                <i class="fas fa-bolt" style="color: #f59e0b;"></i>
+            <div class="task-card" onclick="startTask('smart')" style="margin-top: 15px; display: flex; align-items: center; gap: 15px; text-align: left;">
+                <span class="limit-badge" id="limit-smart">16/16</span>
+                <i class="fas fa-bolt" style="color: #f59e0b; margin: 0;"></i>
                 <div>
-                    <h4>Smart Link Task</h4>
-                    <p>Click and stay 15s for 0.10 TK</p>
+                    <h4 style="font-size: 0.9rem;">Direct Smart Link</h4>
+                    <p style="font-size: 0.75rem; color: #94a3b8;">High Reward: 0.10 TK</p>
                 </div>
             </div>
 
-            <div class="ad-container">
+            <div class="ad-footer">
                 <script type="text/javascript">
                     atOptions = { 'key' : 'b2c8ed21e7d6fd0e5ae3e51b9a14e03b', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
                 </script>
@@ -116,39 +112,32 @@
             </div>
         </div>
 
-        <div id="spinner-page" class="page">
-            <button onclick="showPage('home')" style="background:none; border:none; color:white; margin-bottom:10px;"><i class="fas fa-arrow-left"></i> Back</button>
-            <div style="text-align:center;">
-                <h3>Spin to Earn</h3>
-                <div id="wheel-container">
-                    <div id="wheel-pointer"></div>
-                    <img id="wheel" src="https://i.ibb.co/9Hsy7QC/wheel.png" alt="wheel">
+        <div id="spin-page" class="page">
+            <div style="text-align: center;">
+                <button onclick="showPage('home')" style="float: left; background: none; border: none; color: white;"><i class="fas fa-arrow-left"></i> Back</button>
+                <h3 style="margin-top: 40px;">Lucky Wheel</h3>
+                <div id="wheel-box">
+                    <div id="pointer"></div>
+                    <img id="wheel" src="https://i.ibb.co/9Hsy7QC/wheel.png">
                 </div>
-                <button class="btn-withdraw" id="spin-btn" onclick="startSpin()">SPIN NOW</button>
+                <button class="btn-action" id="spin-btn" onclick="handleSpin()">SPIN NOW</button>
             </div>
         </div>
 
         <div id="wallet" class="page">
-            <h3>Withdraw Money</h3>
-            <div class="balance-card" style="padding:15px; margin-top:15px;">
-                <p>Your Balance</p>
-                <h3 id="wallet-balance">৳ 0.00</h3>
+            <h3>Cash Out</h3>
+            <div class="balance-card" style="padding: 15px; margin-top: 15px;">
+                <p>Withdrawal Balance</p>
+                <h3 id="wal-text-sub">৳ 0.00</h3>
             </div>
-            <div style="background:var(--card); padding:20px; border-radius:15px; margin-top:15px;">
-                <select id="method" class="input-box">
-                    <option value="Bkash">Bkash</option>
+            <div style="background: var(--card); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <select id="w-method" class="input-box">
+                    <option value="Bkash">bKash</option>
                     <option value="Nagad">Nagad</option>
                 </select>
-                <input type="text" id="w-num" class="input-box" placeholder="Phone Number">
-                <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
-                <button class="btn-withdraw" onclick="handleWithdraw()">REQUEST WITHDRAW</button>
-            </div>
-            
-            <div class="ad-container" style="margin-top:20px;">
-                <script type="text/javascript">
-                    atOptions = { 'key' : '2987d2c8d30ed94757855e099e1d7396', 'format' : 'iframe', 'height' : 300, 'width' : 160, 'params' : {} };
-                </script>
-                <script type="text/javascript" src="https://www.highperformanceformat.com/2987d2c8d30ed94757855e099e1d7396/invoke.js"></script>
+                <input type="text" id="w-phone" class="input-box" placeholder="Phone Number">
+                <input type="number" id="w-amount" class="input-box" placeholder="Min Amount 40">
+                <button class="btn-action" onclick="submitWithdraw()">SUBMIT WITHDRAW</button>
             </div>
         </div>
     </div>
@@ -156,7 +145,7 @@
     <nav class="nav">
         <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home fa-lg"></i><br>Home</div>
         <div class="nav-item" onclick="showPage('wallet', this)"><i class="fas fa-wallet fa-lg"></i><br>Wallet</div>
-        <div class="nav-item" onclick="tg.showAlert('Support: @AdminUsername')"><i class="fas fa-headset fa-lg"></i><br>Support</div>
+        <div class="nav-item" onclick="tg.showAlert('Telegram Support: @YourAdmin')"><i class="fas fa-headset fa-lg"></i><br>Support</div>
     </nav>
 
     <script>
@@ -166,26 +155,39 @@
         const ADMIN_ID = "7677039712";
         const SMART_LINK = "https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08";
 
-        let balance = parseFloat(localStorage.getItem('earning_bal')) || 0;
+        let balance = parseFloat(localStorage.getItem('user_bal')) || 0;
+        let taskLimits = JSON.parse(localStorage.getItem('task_limits')) || {
+            video: 16, spin: 16, web: 16, popup: 16, smart: 16, lastDate: new Date().toDateString()
+        };
+
+        // Reset limits if it's a new day
+        if (taskLimits.lastDate !== new Date().toDateString()) {
+            taskLimits = { video: 16, spin: 16, web: 16, popup: 16, smart: 16, lastDate: new Date().toDateString() };
+        }
 
         window.onload = () => {
+            tg.ready();
+            tg.expand();
             if(user) {
-                document.getElementById('user-name').innerText = user.first_name;
-                document.getElementById('user-id').innerText = "ID: " + user.id;
-                document.getElementById('user-img').src = user.photo_url || "https://ui-avatars.com/api/?name="+user.first_name;
+                document.getElementById('u-name').innerText = user.first_name;
+                document.getElementById('u-id').innerText = "ID: " + user.id;
+                document.getElementById('u-img').src = user.photo_url || `https://ui-avatars.com/api/?name=${user.first_name}&background=6366f1&color=fff`;
             }
-            updateBalance();
-            
-            // Monetag In-App Initializer
-            show_10506581({ type: 'inApp', inAppSettings: { frequency: 2, interval: 30, timeout: 5 } });
-
+            updateData();
             setTimeout(() => document.getElementById('splash').remove(), 2000);
         };
 
-        function updateBalance() {
-            document.getElementById('main-balance').innerText = balance.toFixed(2);
-            document.getElementById('wallet-balance').innerText = "৳ " + balance.toFixed(2);
-            localStorage.setItem('earning_bal', balance);
+        function updateData() {
+            document.getElementById('bal-text').innerText = balance.toFixed(2);
+            document.getElementById('wal-text-sub').innerText = "৳ " + balance.toFixed(2);
+            document.getElementById('limit-video').innerText = taskLimits.video + "/16";
+            document.getElementById('limit-spin').innerText = taskLimits.spin + "/16";
+            document.getElementById('limit-web').innerText = taskLimits.web + "/16";
+            document.getElementById('limit-popup').innerText = taskLimits.popup + "/16";
+            document.getElementById('limit-smart').innerText = taskLimits.smart + "/16";
+            
+            localStorage.setItem('user_bal', balance);
+            localStorage.setItem('task_limits', JSON.stringify(taskLimits));
         }
 
         function showPage(id, el) {
@@ -197,88 +199,71 @@
             }
         }
 
-        // --- Reward Logic ---
-        function addReward(amt) {
-            balance += amt;
-            updateBalance();
+        // Main Task Logic
+        function startTask(type) {
+            if (taskLimits[type] <= 0) return tg.showAlert("Today's limit finished for this task!");
+
+            if (type === 'video') {
+                show_10506581().then(() => finalizeTask('video', 0.05)).catch(() => tg.showAlert("Ad failed!"));
+            } else if (type === 'popup') {
+                show_10506581('pop').then(() => finalizeTask('popup', 0.05));
+            } else if (type === 'web') {
+                tg.showAlert("Stay 15s for reward.");
+                window.open('https://www.google.com', '_blank'); // Your blog/web link
+                setTimeout(() => finalizeTask('web', 0.05), 15000);
+            } else if (type === 'smart') {
+                window.open(SMART_LINK, '_blank');
+                tg.showConfirm("Task Complete?", (ok) => { if(ok) finalizeTask('smart', 0.10); });
+            }
         }
 
-        // Monetag Video
-        function runVideoAd() {
-            show_10506581().then(() => {
-                addReward(0.05);
-                tg.showAlert("Success! 0.05 TK added.");
-            }).catch(() => tg.showAlert("Ad not ready!"));
+        function finalizeTask(type, reward) {
+            balance += reward;
+            taskLimits[type]--;
+            updateData();
+            tg.showAlert(`Congratulation! ${reward} TK Added.`);
         }
 
-        // Monetag Popup
-        function runPopupAd() {
-            show_10506581('pop').then(() => {
-                addReward(0.05);
-                tg.showAlert("Success! 0.05 TK added.");
-            });
-        }
-
-        // Spinner Logic
-        function startSpin() {
-            const wheel = document.getElementById('wheel');
+        // Spinner logic
+        function handleSpin() {
+            if (taskLimits.spin <= 0) return tg.showAlert("Limit finished!");
             const btn = document.getElementById('spin-btn');
+            const wheel = document.getElementById('wheel');
             btn.disabled = true;
-            const deg = Math.floor(5000 + Math.random() * 5000);
-            wheel.style.transform = `rotate(${deg}deg)`;
+
+            const rotate = Math.floor(3000 + Math.random() * 3000);
+            wheel.style.transform = `rotate(${rotate}deg)`;
 
             setTimeout(() => {
                 show_10506581().then(() => {
-                    addReward(0.05);
-                    tg.showAlert("Winner! 0.05 TK added.");
+                    finalizeTask('spin', 0.05);
+                    btn.disabled = false;
+                }).catch(() => {
+                    tg.showAlert("Ad Error!");
                     btn.disabled = false;
                 });
-            }, 4100);
+            }, 4000);
         }
 
-        // Adsterra Website Visit
-        function visitWebsite() {
-            tg.showAlert("Visit the page for 15 seconds to get reward.");
-            window.open('https://www.google.com', '_blank'); // You can put your ad blog link here
-            setTimeout(() => {
-                addReward(0.05);
-                tg.showAlert("Reward Added: 0.05 TK");
-            }, 15000);
-        }
+        async function submitWithdraw() {
+            const amt = document.getElementById('w-amount').value;
+            const phone = document.getElementById('w-phone').value;
+            const method = document.getElementById('w-method').value;
 
-        // Smart Link (0.10 TK)
-        function openSmartLink() {
-            window.open(SMART_LINK, '_blank');
-            tg.showConfirm("Did you complete the task?", (ok) => {
-                if(ok) {
-                    addReward(0.10);
-                    tg.showAlert("Reward Added: 0.10 TK");
-                }
-            });
-        }
+            if (amt < 40 || amt > balance || phone.length < 10) return tg.showAlert("Invalid Input!");
 
-        // Withdraw Request
-        async function handleWithdraw() {
-            const amt = document.getElementById('w-amt').value;
-            const num = document.getElementById('w-num').value;
-            const method = document.getElementById('method').value;
-
-            if(amt < 40 || amt > balance || !num) return tg.showAlert("Invalid Request!");
-
-            const text = encodeURIComponent(`Withdrawal Request!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nNumber: ${num}\nAmount: ${amt} TK`);
+            const text = encodeURIComponent(`💰 New Withdraw!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nPhone: ${phone}\nAmount: ${amt} TK`);
             
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
                 balance -= parseFloat(amt);
-                updateBalance();
-                tg.showAlert("Request Sent Successfully!");
-            } catch(e) { tg.showAlert("Error sending request."); }
+                updateData();
+                tg.showAlert("Withdraw Request Sent!");
+            } catch(e) { tg.showAlert("Network Error!"); }
         }
-
-        tg.expand();
     </script>
 
-    <div class="ad-container" style="position:fixed; bottom:60px; left:0; width:100%;">
+    <div class="ad-footer" style="position: fixed; bottom: 65px; left: 0; width: 100%; border-radius: 0;">
         <script type="text/javascript">
             atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
         </script>
