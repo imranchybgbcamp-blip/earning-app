@@ -3,173 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Global Earning BD - Pro App</title>
+    <title>Global Earning BD - Verified App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    
     <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-        :root { --bg: #0f172a; --card: #1e293b; --text: #ffffff; --primary: #38bdf8; --border: #334155; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 120px; overflow-x: hidden; }
+        :root { --primary: #4285F4; --bg: #0f172a; --card: #1e293b; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
         
-        .profile-header { padding: 25px 15px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); border-bottom: 1px solid var(--border); display: flex; align-items: center; }
-        #user-photo { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--primary); margin-right: 15px; }
+        /* Login Screen Styles */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .google-btn { background: white; color: #444; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; border: none; gap: 10px; font-size: 1rem; }
         
-        .page { display: none; padding: 15px; animation: slideUp 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .stat-card { padding: 20px; border-radius: 15px; background: var(--card); border: 1px solid var(--border); text-align: center; margin-bottom: 15px; }
-        .stat-card p { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
-        
-        .action-btn { width: 100%; padding: 16px; font-size: 1.1rem; font-weight: 700; color: #fff; border: none; border-radius: 12px; cursor: pointer; background: var(--primary); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); transition: 0.3s; }
-        .action-btn:active { transform: scale(0.98); }
-        
-        .bottom-nav { position: fixed; bottom: 65px; width: 100%; max-width: 500px; left: 50%; transform: translateX(-50%); display: flex; justify-content: space-around; padding: 12px 0; background: #1e293b; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-btn { background: none; border: none; color: #94a3b8; font-size: 0.8rem; cursor: pointer; text-align: center; }
-        .nav-btn.active { color: var(--primary); }
-        
-        .ad-banner { position: fixed; bottom: 0; width: 100%; max-width: 500px; left: 50%; transform: translateX(-50%); height: 65px; background: #000; display: flex; justify-content: center; align-items: center; z-index: 1001; border-top: 1px solid var(--primary); }
-        .input-box { width: 100%; padding: 15px; border-radius: 10px; background: #334155; border: 1px solid var(--border); color: #fff; margin-bottom: 15px; outline: none; }
+        .main-app { display: none; padding-bottom: 80px; }
+        .header { background: var(--card); padding: 20px; border-bottom: 3px solid var(--primary); display: flex; align-items: center; gap: 15px; }
+        .u-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); }
+        .card { background: var(--card); margin: 15px; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
+        .balance { font-size: 2.5rem; font-weight: bold; color: var(--primary); margin: 10px 0; }
+        .btn-action { background: var(--primary); color: white; width: 90%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
+        .input-box { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
     </style>
 </head>
 <body>
 
-<div id="app">
-    <header class="profile-header">
-        <img id="user-photo" src="https://via.placeholder.com/60">
-        <div>
-            <h2 id="user-name">Loading...</h2>
-            <p style="font-size: 0.9rem; color: var(--primary);">Wallet: <span id="user-points">0.00</span> TK</p>
-        </div>
-    </header>
-
-    <script>
-        show_10506581({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } }); 
-    </script>
-
-    <main>
-        <div id="home-page" class="page active">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom: 20px;">
-                <div class="stat-card"><h3>Slot</h3><p id="slot-text">0/25</p></div>
-                <div class="stat-card"><h3>Today</h3><p id="total-text">0</p></div>
-            </div>
-            <button class="action-btn" onclick="copyRef()"><i class="fas fa-user-plus"></i> Invite Friends</button>
-        </div>
-
-        <div id="tasks-page" class="page">
-            <div class="stat-card">
-                <i class="fas fa-play-circle" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"></i>
-                <h3>Rewarded Video Task</h3>
-                <p style="font-size: 0.9rem; color: #94a3b8; margin: 10px 0 20px 0;">পুরো ভিডিও দেখলে ৫ পয়সা যোগ হবে</p>
-                <button id="watch-ad-btn" class="action-btn">Start Watching</button>
-            </div>
-        </div>
-
-        <div id="withdraw-page" class="page">
-            <div class="stat-card">
-                <h3>Withdraw Earnings</h3>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 15px;">মিনিমাম ৪০ টাকা হলেই উইথড্র করতে পারবেন</p>
-                <input type="text" id="acc-num" placeholder="বিকাশ/নগদ নাম্বার" class="input-box">
-                <input type="number" id="w-amount" placeholder="পরিমাণ (TK)" class="input-box">
-                <button class="action-btn" style="background: #22c55e;" onclick="requestWithdraw()">Submit Request</button>
-            </div>
-        </div>
-    </main>
-
-    <nav class="bottom-nav">
-        <button class="nav-btn active" data-page="home-page"><i class="fas fa-home fa-lg"></i><br>Home</button>
-        <button class="nav-btn" data-page="tasks-page"><i class="fas fa-tasks fa-lg"></i><br>Tasks</button>
-        <button class="nav-btn" data-page="withdraw-page"><i class="fas fa-wallet fa-lg"></i><br>Wallet</button>
-    </nav>
-
-    <div class="ad-banner">
-        <script type="text/javascript">
-            atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="https://www.highperformanceformat.com/844fbcd18257b08f493940b654828c18/invoke.js"></script>
+    <div id="login-screen">
+        <i class="fas fa-shield-halved" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
+        <h2>Welcome Back</h2>
+        <p>নিরাপদ আর্নিং এর জন্য লগইন করুন</p>
+        <button class="google-btn" onclick="handleLogin()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+            Login with Telegram Account
+        </button>
     </div>
-</div>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-const tg = window.Telegram.WebApp;
-const SMART_LINK = "https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08"; 
-const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
-const CHANNEL_ID = "-1007677039712"; // এখানে আপনার চ্যানেলের আইডি দিন। যদি না জানেন তবে @userinfobot এ চ্যানেল থেকে মেসেজ ফরওয়ার্ড করে আইডি বের করুন।
+    <div id="app-content" class="main-app">
+        <div class="header">
+            <img id="pfp" class="u-img" src="">
+            <div style="text-align: left;">
+                <h3 id="name" style="margin:0;">User Name</h3>
+                <p id="id-tag" style="margin:0; font-size: 0.8rem; color: #94a3b8;">ID: 000000</p>
+            </div>
+        </div>
 
-let state = JSON.parse(localStorage.getItem('user_data')) || { points: 0, ads: 0, total: 0 };
+        <div class="card">
+            <h3>Your Wallet</h3>
+            <div class="balance">৳ <span id="bal-text">0.00</span></div>
+        </div>
 
-function updateUI() {
-    document.getElementById('user-points').innerText = state.points.toFixed(2);
-    document.getElementById('slot-text').innerText = state.ads + "/25";
-    document.getElementById('total-text').innerText = state.total;
-    localStorage.setItem('user_data', JSON.stringify(state));
-}
+        <div class="card">
+            <i class="fas fa-video" style="font-size: 2rem; color: #ff4757;"></i>
+            <h3>Watch & Earn</h3>
+            <button class="btn-action" onclick="playAd()">START TASK</button>
+        </div>
 
-tg.ready();
-tg.expand();
-const u = tg.initDataUnsafe.user;
-if(u) {
-    document.getElementById('user-name').innerText = u.first_name;
-    document.getElementById('user-photo').src = u.photo_url || 'https://via.placeholder.com/60';
-}
+        <div class="card">
+            <h3>Withdraw</h3>
+            <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
+            <input type="text" id="w-num" class="input-box" placeholder="Bkash/Nagad Number">
+            <button class="btn-action" style="background: #2ed573;" onclick="withdraw()">Withdraw Request</button>
+        </div>
+    </div>
 
-function giveReward() {
-    state.points += 0.05; 
-    state.ads++;
-    state.total++;
-    updateUI();
-    tg.showAlert("অভিনন্দন! ৫ পয়সা রিওয়ার্ড যোগ হয়েছে।");
-}
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe.user;
+        const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
+        const ADMIN_ID = "7677039712";
 
-document.getElementById('watch-ad-btn').onclick = () => {
-    show_10506581().then(() => {
-        giveReward();
-    }).catch(() => {
-        // Monetag ফেল করলে Adsterra Smart Link ব্যাকআপ
-        window.open(SMART_LINK, '_blank');
-        tg.showAlert("অ্যাড ভেরিফাই হচ্ছে, ৩০ সেকেন্ড অপেক্ষা করুন...");
-        setTimeout(giveReward, 30000);
-    });
-};
+        let currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
 
-async function requestWithdraw() {
-    const amount = parseFloat(document.getElementById('w-amount').value);
-    const num = document.getElementById('acc-num').value;
-    if(!amount || amount < 40 || amount > state.points || !num) return tg.showAlert("সঠিক তথ্য দিন!");
-    
-    // চ্যানেলে মেসেজ পাঠানোর সিস্টেম
-    const msg = encodeURIComponent(`🚨 নতুন উইথড্র রিকোয়েস্ট!\n\n👤 ইউজার: ${u.first_name}\n🆔 আইডি: ${u.id}\n📞 নাম্বার: ${num}\n💰 পরিমাণ: ${amount} TK\n\n✅ দ্রুত পেমেন্ট করুন।`);
-    
-    try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHANNEL_ID}&text=${msg}`);
-        state.points -= amount;
-        updateUI();
-        tg.showAlert("আপনার রিকোয়েস্টটি চ্যানেলে পাঠানো হয়েছে।");
-    } catch(e) {
-        tg.showAlert("সার্ভার সমস্যা! আবার চেষ্টা করুন।");
-    }
-}
+        function handleLogin() {
+            if(user) {
+                // লগইন সফল হলে স্ক্রিন হাইড হবে
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-content').style.display = 'block';
+                
+                // ডাটা সেট করা
+                document.getElementById('name').innerText = user.first_name;
+                document.getElementById('id-tag').innerText = "ID: " + user.id;
+                document.getElementById('pfp').src = user.photo_url || "https://ui-avatars.com/api/?name=" + user.first_name;
+                document.getElementById('bal-text').innerText = currentBalance.toFixed(2);
+            } else {
+                tg.showAlert("দয়া করে টেলিগ্রাম অ্যাপ থেকে ওপেন করুন।");
+            }
+        }
 
-document.querySelectorAll('.nav-btn').forEach(b => {
-    b.onclick = () => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(b.dataset.page).classList.add('active');
-        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-        b.classList.add('active');
-    };
-});
+        function playAd() {
+            show_10506581().then(() => {
+                currentBalance += 0.05;
+                saveData();
+                tg.showAlert("০.০৫ টাকা যোগ হয়েছে!");
+            }).catch(() => {
+                tg.showAlert("অ্যাড লোড হয়নি। আবার চেষ্টা করুন।");
+            });
+        }
 
-function copyRef() {
-    const ref = "https://t.me/globalearningbdbot?start=" + u.id;
-    navigator.clipboard.writeText(ref);
-    tg.showAlert("রেফার লিঙ্ক কপি হয়েছে!");
-}
+        function saveData() {
+            localStorage.setItem('balance', currentBalance);
+            document.getElementById('bal-text').innerText = currentBalance.toFixed(2);
+        }
 
-updateUI();
-</script>
+        async function withdraw() {
+            const amt = document.getElementById('w-amt').value;
+            const num = document.getElementById('w-num').value;
+
+            if(!amt || amt < 40 || amt > currentBalance || !num) {
+                return tg.showAlert("সঠিক তথ্য দিন অথবা পর্যাপ্ত ব্যালেন্স নেই!");
+            }
+
+            const text = encodeURIComponent(`💰 New Withdrawal!\n\nUser: ${user.first_name}\nID: ${user.id}\nAmount: ${amt} TK\nNumber: ${num}`);
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
+                currentBalance -= amt;
+                saveData();
+                tg.showAlert("রিকোয়েস্ট পাঠানো হয়েছে!");
+            } catch(e) {
+                tg.showAlert("Error sending request!");
+            }
+        }
+
+        tg.ready();
+        tg.expand();
+    </script>
 </body>
-</html>
+            </html>
