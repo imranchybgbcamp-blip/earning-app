@@ -1,395 +1,268 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Global Earning BD - Premium Edition</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    
-    <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
-    
-    <style>
-        :root { --primary: #3b82f6; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #10b981; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Earning BD</title>
 
-        /* Splash Screen */
-        #splash { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
-        .loader { width: 50px; height: 50px; border: 5px solid #334155; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        /* App Layout */
-        .app-container { display: flex; flex-direction: column; height: 100vh; max-width: 500px; margin: 0 auto; background: var(--bg); position: relative; }
-        .header { padding: 20px; background: var(--card); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; }
-        .user-meta { display: flex; align-items: center; gap: 12px; }
-        #u-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
-        
-        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 160px; }
-        .page { display: none; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+<style>
+:root{
+--primary:#2563eb;
+--bg:#020617;
+--card:#0f172a;
+--text:#e5e7eb;
+--green:#22c55e;
+--danger:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:var(--bg);color:var(--text)}
+.app{max-width:420px;margin:auto;height:100vh;display:flex;flex-direction:column}
 
-        /* Cards & Buttons */
-        .balance-card { background: linear-gradient(135deg, #1d4ed8, #3b82f6); padding: 25px; border-radius: 24px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
-        .balance-card h2 { font-size: 2.5rem; margin: 10px 0; }
-        
-        .task-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
-        .task-card:active { transform: scale(0.97); background: #2d3a4f; }
-        .task-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem; }
+/* Header */
+.header{
+background:var(--card);
+padding:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #1e293b;
+}
+.user{display:flex;gap:10px;align-items:center}
+.user img{width:40px;height:40px;border-radius:50%;border:2px solid var(--primary)}
 
-        .btn-withdraw { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: bold; font-size: 1rem; margin-top: 10px; cursor: pointer; }
-        .input-box { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 12px; outline: none; }
+/* Pages */
+.pages{flex:1;overflow:auto;padding:14px}
+.page{display:none;animation:fade .3s}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
 
-        /* Bottom Nav */
-        .nav { position: absolute; bottom: 70px; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; z-index: 100; }
-        .nav-item { color: #94a3b8; text-align: center; font-size: 0.75rem; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--primary); }
-        
-        /* Banner Ad Area */
-        .ad-footer { position: absolute; bottom: 0; width: 100%; height: 70px; background: #000; display: flex; justify-content: center; align-items: center; border-top: 1px solid var(--primary); z-index: 101; }
-    </style>
+/* Card */
+.card{
+background:var(--card);
+padding:16px;
+border-radius:16px;
+margin-bottom:14px;
+border:1px solid #1e293b;
+}
+
+/* Balance */
+.balance{
+background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+text-align:center;
+}
+.balance h1{font-size:2.3rem}
+
+/* Task */
+.task{
+display:flex;
+align-items:center;
+gap:14px;
+cursor:pointer;
+}
+.task i{font-size:1.5rem;color:var(--primary)}
+
+/* Inputs */
+input,select{
+width:100%;
+padding:12px;
+margin-top:8px;
+border-radius:10px;
+background:#020617;
+border:1px solid #1e293b;
+color:white;
+}
+
+/* Button */
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+}
+.btn.primary{background:var(--primary);color:white}
+.btn.green{background:var(--green);color:white}
+.btn.danger{background:var(--danger);color:white}
+
+/* Nav */
+.nav{
+display:flex;
+background:var(--card);
+border-top:1px solid #1e293b;
+}
+.nav div{
+flex:1;
+text-align:center;
+padding:10px;
+font-size:.75rem;
+color:#94a3b8;
+cursor:pointer;
+}
+.nav div.active{color:var(--primary)}
+.nav i{font-size:1.2rem}
+</style>
 </head>
+
 <body>
 
-    <div id="splash">
-        <h1 style="margin-bottom: 20px; letter-spacing: 2px;">GLOBAL EARNING</h1>
-        <div class="loader"></div>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="user">
+    <img id="photo">
+    <div>
+      <b id="name">User</b><br>
+      <small id="uid"></small>
     </div>
+  </div>
+  <i class="fa-solid fa-bell"></i>
+</div>
 
-    <div class="app-container">
-        <header class="header">
-            <div class="user-meta">
-                <img id="u-img" src="https://via.placeholder.com/45">
-                <div>
-                    <h4 id="u-name">User</h4>
-                    <p id="u-id" style="font-size: 0.7rem; color: var(--primary);">ID: 000000</p>
-                </div>
-            </div>
-            <i class="fas fa-bell" style="font-size: 1.2rem; color: #94a3b8;"></i>
-        </header>
+<!-- PAGES -->
+<div class="pages">
 
-        <div class="content">
-            <div id="home" class="page active">
-                <div class="balance-card">
-                    <p style="font-size: 0.9rem; opacity: 0.8;">Available Balance</p>
-                    <h2>৳ <span id="balance">0.00</span></h2>
-                    <p style="font-size: 0.8rem; background: rgba(0,0,0,0.2); display: inline-block; padding: 4px 12px; border-radius: 20px;">Verified Account</p>
-                </div>
+<!-- HOME -->
+<div class="page active" id="home">
+  <div class="card balance">
+    <p>Available Balance</p>
+    <h1>৳ <span id="balance">0.00</span></h1>
+    <small>Verified Account</small>
+  </div>
 
-                <h3 style="margin-bottom: 15px;">Daily Tasks</h3>
-                <div class="task-card" onclick="runMonetagAd()">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <div style="flex: 1;">
-                        <h4>Watch Video</h4>
-                        <p style="font-size: 0.8rem; color: #94a3b8;">Earn 0.05 TK per view</p>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
-                </div>
-
-                <div class="task-card" onclick="window.open('https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08', '_blank')">
-                    <div class="task-icon" style="color: #f59e0b;"><i class="fas fa-bolt"></i></div>
-                    <div style="flex: 1;">
-                        <h4>Smart Link Task</h4>
-                        <p style="font-size: 0.8rem; color: #94a3b8;">High CPM Ad Server</p>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
-                </div>
-            </div>
-
-            <div id="wallet" class="page">
-                <h3 style="margin-bottom: 20px;">Cash Out</h3>
-                <div style="background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155;">
-                    <label style="font-size: 0.8rem; color: #94a3b8;">Select Method</label>
-                    <select class="input-box" id="method" style="margin-top: 5px;">
-                        <option value="Bkash">Bkash</option>
-                        <option value="Nagad">Nagad</option>
-                    </select>
-                    <input type="text" id="w-num" class="input-box" placeholder="Phone Number">
-                    <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
-                    <button class="btn-withdraw" onclick="handleWithdraw()">REQUEST WITHDRAW</button>
-                </div>
-                <p style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">Payment takes 1-24 hours.</p>
-            </div>
-        </div>
-
-        <nav class="nav">
-            <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home fa-lg"></i><br>Home</div>
-            <div class="nav-item" onclick="showPage('wallet', this)"><i class="fas fa-wallet fa-lg"></i><br>Wallet</div>
-            <div class="nav-item" onclick="tg.showAlert('Coming Soon!')"><i class="fas fa-users fa-lg"></i><br>Invite</div>
-        </nav>
-
-        <div class="ad-footer">
-            <script type="text/javascript">
-                atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/844fbcd18257b08f493940b654828c18/invoke.js"></script>
-        </div>
+  <div class="card task" onclick="watchAd()">
+    <i class="fa-solid fa-play"></i>
+    <div>
+      <b>Watch Ad</b><br>
+      <small>Earn ৳0.10</small>
     </div>
+  </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe.user;
-        const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
-        const ADMIN_ID = "7677039712";
+  <div class="card task" onclick="dailyBonus()">
+    <i class="fa-solid fa-gift"></i>
+    <div>
+      <b>Daily Bonus</b><br>
+      <small>৳1 once per day</small>
+    </div>
+  </div>
+</div>
 
-        let balance = parseFloat(localStorage.getItem('user_balance')) || 0;
+<!-- TASKS -->
+<div class="page" id="tasks">
+  <div class="card task" onclick="completeTask(0.5)">
+    <i class="fa-solid fa-link"></i>
+    <div>
+      <b>Visit Link</b><br>
+      <small>Earn ৳0.50</small>
+    </div>
+  </div>
+</div>
 
-        // Initialize App
-        window.onload = () => {
-            if(user) {
-                document.getElementById('u-name').innerText = user.first_name;
-                document.getElementById('u-id').innerText = "UID: " + user.id;
-                document.getElementById('u-img').src = user.photo_url || "https://ui-avatars.com/api/?background=3b82f6&color=fff&name="+user.first_name;
-            }
-            document.getElementById('balance').innerText = balance.toFixed(2);
-            
-            // Auto-trigger Monetag In-App Ads
-            show_10506581({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
+<!-- WALLET -->
+<div class="page" id="wallet">
+  <div class="card">
+    <label>Method</label>
+    <select id="method">
+      <option>Bkash</option>
+      <option>Nagad</option>
+    </select>
 
-            setTimeout(() => { document.getElementById('splash').style.opacity = '0'; setTimeout(() => document.getElementById('splash').remove(), 500); }, 1500);
-        };
+    <label>Number</label>
+    <input id="number" placeholder="01XXXXXXXXX">
 
-        function showPage(pageId, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
+    <label>Amount (Min 40)</label>
+    <input type="number" id="amount">
 
-        // Ad Task with Monetag Reward
-        function runMonetagAd() {
-            show_10506581().then(() => {
-                rewardUser(0.05);
-                tg.showAlert("Success! 0.05 TK added.");
-            }).catch(() => {
-                tg.showAlert("Ad failed to load. Try again later.");
-            });
-        }
+    <button class="btn green" onclick="withdraw()">Withdraw</button>
+  </div>
+</div>
 
-        function rewardUser(amt) {
-            balance += amt;
-            localStorage.setItem('user_balance', balance);
-            document.getElementById('balance').innerText = balance.toFixed(2);
-        }
+<!-- PROFILE -->
+<div class="page" id="profile">
+  <div class="card">
+    <p><b>Name:</b> <span id="pname"></span></p>
+    <p><b>User ID:</b> <span id="pid"></span></p>
+    <p><b>Referral Code:</b> <span id="ref"></span></p>
+    <p><b>Status:</b> Active</p>
+  </div>
+</div>
 
-        async function handleWithdraw() {
-            const amt = document.getElementById('w-amt').value;
-            const num = document.getElementById('w-num').value;
-            const method = document.getElementById('method').value;
+</div>
 
-            if(!amt || amt < 40 || amt > balance || !num) return tg.showAlert("Invalid data or low balance!");
+<!-- NAV -->
+<div class="nav">
+  <div class="active" onclick="openPage('home',this)"><i class="fa-solid fa-house"></i><br>Home</div>
+  <div onclick="openPage('tasks',this)"><i class="fa-solid fa-list"></i><br>Tasks</div>
+  <div onclick="openPage('wallet',this)"><i class="fa-solid fa-wallet"></i><br>Wallet</div>
+  <div onclick="openPage('profile',this)"><i class="fa-solid fa-user"></i><br>Profile</div>
+</div>
 
-            const text = encodeURIComponent(`💰 Withdraw Request!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nNumber: ${num}\nAmount: ${amt} TK`);
-            
-            try {
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
-                balance -= parseFloat(amt);
-                localStorage.setItem('user_balance', balance);
-                document.getElementById('balance').innerText = balance.toFixed(2);
-                tg.showAlert("Request sent successfully!");
-            } catch(e) { tg.showAlert("Error sending request."); }
-        }
+</div>
 
-        tg.ready();
-        tg.expand();
-    </script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+const tg=window.Telegram.WebApp;
+tg.ready();tg.expand();
+
+let bal=Number(localStorage.getItem("bal"))||0;
+let bonusDate=localStorage.getItem("bonus");
+
+const user=tg.initDataUnsafe.user||{first_name:"Guest",id:999};
+
+photo.src=user.photo_url||"https://ui-avatars.com/api/?name="+user.first_name;
+name.innerText=user.first_name;
+uid.innerText="ID: "+user.id;
+pname.innerText=user.first_name;
+pid.innerText=user.id;
+ref.innerText="REF"+user.id;
+
+update();
+
+function update(){
+ balance.innerText=bal.toFixed(2);
+ localStorage.setItem("bal",bal);
+}
+
+function openPage(id,el){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav div").forEach(n=>n.classList.remove("active"));
+ el.classList.add("active");
+}
+
+function watchAd(){
+ bal+=0.10;
+ update();
+ tg.showAlert("৳0.10 added");
+}
+
+function dailyBonus(){
+ let today=new Date().toDateString();
+ if(today===bonusDate) return tg.showAlert("Already claimed today");
+ bal+=1;
+ bonusDate=today;
+ localStorage.setItem("bonus",today);
+ update();
+ tg.showAlert("৳1 Bonus added");
+}
+
+function completeTask(a){
+ bal+=a;
+ update();
+ tg.showAlert("Task completed");
+}
+
+function withdraw(){
+ let amt=Number(amount.value);
+ if(amt<40||amt>bal) return tg.showAlert("Invalid amount");
+ bal-=amt;
+ update();
+ tg.showAlert("Withdraw request sent");
+}
+</script>
+
 </body>
-                </html><!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Global Earning BD - Premium Edition</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    
-    <script src='//libtl.com/sdk.js' data-zone='10506581' data-sdk='show_10506581'></script>
-    
-    <style>
-        :root { --primary: #3b82f6; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #10b981; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; }
-
-        /* Splash Screen */
-        #splash { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
-        .loader { width: 50px; height: 50px; border: 5px solid #334155; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* App Layout */
-        .app-container { display: flex; flex-direction: column; height: 100vh; max-width: 500px; margin: 0 auto; background: var(--bg); position: relative; }
-        .header { padding: 20px; background: var(--card); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; }
-        .user-meta { display: flex; align-items: center; gap: 12px; }
-        #u-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
-        
-        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 160px; }
-        .page { display: none; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Cards & Buttons */
-        .balance-card { background: linear-gradient(135deg, #1d4ed8, #3b82f6); padding: 25px; border-radius: 24px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
-        .balance-card h2 { font-size: 2.5rem; margin: 10px 0; }
-        
-        .task-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
-        .task-card:active { transform: scale(0.97); background: #2d3a4f; }
-        .task-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem; }
-
-        .btn-withdraw { background: var(--accent); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: bold; font-size: 1rem; margin-top: 10px; cursor: pointer; }
-        .input-box { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 12px; outline: none; }
-
-        /* Bottom Nav */
-        .nav { position: absolute; bottom: 70px; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; z-index: 100; }
-        .nav-item { color: #94a3b8; text-align: center; font-size: 0.75rem; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--primary); }
-        
-        /* Banner Ad Area */
-        .ad-footer { position: absolute; bottom: 0; width: 100%; height: 70px; background: #000; display: flex; justify-content: center; align-items: center; border-top: 1px solid var(--primary); z-index: 101; }
-    </style>
-</head>
-<body>
-
-    <div id="splash">
-        <h1 style="margin-bottom: 20px; letter-spacing: 2px;">GLOBAL EARNING</h1>
-        <div class="loader"></div>
-    </div>
-
-    <div class="app-container">
-        <header class="header">
-            <div class="user-meta">
-                <img id="u-img" src="https://via.placeholder.com/45">
-                <div>
-                    <h4 id="u-name">User</h4>
-                    <p id="u-id" style="font-size: 0.7rem; color: var(--primary);">ID: 000000</p>
-                </div>
-            </div>
-            <i class="fas fa-bell" style="font-size: 1.2rem; color: #94a3b8;"></i>
-        </header>
-
-        <div class="content">
-            <div id="home" class="page active">
-                <div class="balance-card">
-                    <p style="font-size: 0.9rem; opacity: 0.8;">Available Balance</p>
-                    <h2>৳ <span id="balance">0.00</span></h2>
-                    <p style="font-size: 0.8rem; background: rgba(0,0,0,0.2); display: inline-block; padding: 4px 12px; border-radius: 20px;">Verified Account</p>
-                </div>
-
-                <h3 style="margin-bottom: 15px;">Daily Tasks</h3>
-                <div class="task-card" onclick="runMonetagAd()">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <div style="flex: 1;">
-                        <h4>Watch Video</h4>
-                        <p style="font-size: 0.8rem; color: #94a3b8;">Earn 0.05 TK per view</p>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
-                </div>
-
-                <div class="task-card" onclick="window.open('https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08', '_blank')">
-                    <div class="task-icon" style="color: #f59e0b;"><i class="fas fa-bolt"></i></div>
-                    <div style="flex: 1;">
-                        <h4>Smart Link Task</h4>
-                        <p style="font-size: 0.8rem; color: #94a3b8;">High CPM Ad Server</p>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: #334155;"></i>
-                </div>
-            </div>
-
-            <div id="wallet" class="page">
-                <h3 style="margin-bottom: 20px;">Cash Out</h3>
-                <div style="background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #334155;">
-                    <label style="font-size: 0.8rem; color: #94a3b8;">Select Method</label>
-                    <select class="input-box" id="method" style="margin-top: 5px;">
-                        <option value="Bkash">Bkash</option>
-                        <option value="Nagad">Nagad</option>
-                    </select>
-                    <input type="text" id="w-num" class="input-box" placeholder="Phone Number">
-                    <input type="number" id="w-amt" class="input-box" placeholder="Amount (Min 40)">
-                    <button class="btn-withdraw" onclick="handleWithdraw()">REQUEST WITHDRAW</button>
-                </div>
-                <p style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">Payment takes 1-24 hours.</p>
-            </div>
-        </div>
-
-        <nav class="nav">
-            <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home fa-lg"></i><br>Home</div>
-            <div class="nav-item" onclick="showPage('wallet', this)"><i class="fas fa-wallet fa-lg"></i><br>Wallet</div>
-            <div class="nav-item" onclick="tg.showAlert('Coming Soon!')"><i class="fas fa-users fa-lg"></i><br>Invite</div>
-        </nav>
-
-        <div class="ad-footer">
-            <script type="text/javascript">
-                atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/844fbcd18257b08f493940b654828c18/invoke.js"></script>
-        </div>
-    </div>
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe.user;
-        const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
-        const ADMIN_ID = "7677039712";
-
-        let balance = parseFloat(localStorage.getItem('user_balance')) || 0;
-
-        // Initialize App
-        window.onload = () => {
-            if(user) {
-                document.getElementById('u-name').innerText = user.first_name;
-                document.getElementById('u-id').innerText = "UID: " + user.id;
-                document.getElementById('u-img').src = user.photo_url || "https://ui-avatars.com/api/?background=3b82f6&color=fff&name="+user.first_name;
-            }
-            document.getElementById('balance').innerText = balance.toFixed(2);
-            
-            // Auto-trigger Monetag In-App Ads
-            show_10506581({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
-
-            setTimeout(() => { document.getElementById('splash').style.opacity = '0'; setTimeout(() => document.getElementById('splash').remove(), 500); }, 1500);
-        };
-
-        function showPage(pageId, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        // Ad Task with Monetag Reward
-        function runMonetagAd() {
-            show_10506581().then(() => {
-                rewardUser(0.05);
-                tg.showAlert("Success! 0.05 TK added.");
-            }).catch(() => {
-                tg.showAlert("Ad failed to load. Try again later.");
-            });
-        }
-
-        function rewardUser(amt) {
-            balance += amt;
-            localStorage.setItem('user_balance', balance);
-            document.getElementById('balance').innerText = balance.toFixed(2);
-        }
-
-        async function handleWithdraw() {
-            const amt = document.getElementById('w-amt').value;
-            const num = document.getElementById('w-num').value;
-            const method = document.getElementById('method').value;
-
-            if(!amt || amt < 40 || amt > balance || !num) return tg.showAlert("Invalid data or low balance!");
-
-            const text = encodeURIComponent(`💰 Withdraw Request!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nNumber: ${num}\nAmount: ${amt} TK`);
-            
-            try {
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
-                balance -= parseFloat(amt);
-                localStorage.setItem('user_balance', balance);
-                document.getElementById('balance').innerText = balance.toFixed(2);
-                tg.showAlert("Request sent successfully!");
-            } catch(e) { tg.showAlert("Error sending request."); }
-        }
-
-        tg.ready();
-        tg.expand();
-    </script>
-</body>
-                                                                                                  </html>
+</html>
