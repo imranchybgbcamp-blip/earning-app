@@ -34,7 +34,6 @@
         .task-card i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
         .limit-badge { position: absolute; top: 10px; right: 10px; font-size: 0.65rem; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 10px; color: var(--accent); }
 
-        /* Spinner */
         #wheel-box { width: 260px; height: 260px; margin: 30px auto; position: relative; }
         #wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.1, 0, 0, 1); }
         #pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 25px; height: 35px; background: #ef4444; clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 5; }
@@ -100,7 +99,7 @@
                 <i class="fas fa-bolt" style="color: #f59e0b; margin: 0;"></i>
                 <div>
                     <h4 style="font-size: 0.9rem;">Direct Smart Link</h4>
-                    <p style="font-size: 0.75rem; color: #94a3b8;">High Reward: 0.10 TK</p>
+                    <p style="font-size: 0.75rem; color: #94a3b8;">High Reward: 0.70 TK</p>
                 </div>
             </div>
 
@@ -136,7 +135,7 @@
                     <option value="Nagad">Nagad</option>
                 </select>
                 <input type="text" id="w-phone" class="input-box" placeholder="Phone Number">
-                <input type="number" id="w-amount" class="input-box" placeholder="Min Amount 40">
+                <input type="number" id="w-amount" class="input-box" placeholder="Min Amount 30">
                 <button class="btn-action" onclick="submitWithdraw()">SUBMIT WITHDRAW</button>
             </div>
         </div>
@@ -153,121 +152,4 @@
         const user = tg.initDataUnsafe.user;
         const BOT_TOKEN = "8546793925:AAFs2xfGFkutrydu4TRdVQxxjU1N0g3HaDU";
         const ADMIN_ID = "7677039712";
-        const SMART_LINK = "https://www.effectivegatecpm.com/qyiup1t1n?key=9520d844c44f73ddd794268a7d0cef08";
-
-        let balance = parseFloat(localStorage.getItem('user_bal')) || 0;
-        let taskLimits = JSON.parse(localStorage.getItem('task_limits')) || {
-            video: 16, spin: 16, web: 16, popup: 16, smart: 16, lastDate: new Date().toDateString()
-        };
-
-        // Reset limits if it's a new day
-        if (taskLimits.lastDate !== new Date().toDateString()) {
-            taskLimits = { video: 16, spin: 16, web: 16, popup: 16, smart: 16, lastDate: new Date().toDateString() };
-        }
-
-        window.onload = () => {
-            tg.ready();
-            tg.expand();
-            if(user) {
-                document.getElementById('u-name').innerText = user.first_name;
-                document.getElementById('u-id').innerText = "ID: " + user.id;
-                document.getElementById('u-img').src = user.photo_url || `https://ui-avatars.com/api/?name=${user.first_name}&background=6366f1&color=fff`;
-            }
-            updateData();
-            setTimeout(() => document.getElementById('splash').remove(), 2000);
-        };
-
-        function updateData() {
-            document.getElementById('bal-text').innerText = balance.toFixed(2);
-            document.getElementById('wal-text-sub').innerText = "৳ " + balance.toFixed(2);
-            document.getElementById('limit-video').innerText = taskLimits.video + "/16";
-            document.getElementById('limit-spin').innerText = taskLimits.spin + "/16";
-            document.getElementById('limit-web').innerText = taskLimits.web + "/16";
-            document.getElementById('limit-popup').innerText = taskLimits.popup + "/16";
-            document.getElementById('limit-smart').innerText = taskLimits.smart + "/16";
-            
-            localStorage.setItem('user_bal', balance);
-            localStorage.setItem('task_limits', JSON.stringify(taskLimits));
-        }
-
-        function showPage(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(el) {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                el.classList.add('active');
-            }
-        }
-
-        // Main Task Logic
-        function startTask(type) {
-            if (taskLimits[type] <= 0) return tg.showAlert("Today's limit finished for this task!");
-
-            if (type === 'video') {
-                show_10506581().then(() => finalizeTask('video', 0.05)).catch(() => tg.showAlert("Ad failed!"));
-            } else if (type === 'popup') {
-                show_10506581('pop').then(() => finalizeTask('popup', 0.05));
-            } else if (type === 'web') {
-                tg.showAlert("Stay 15s for reward.");
-                window.open('https://www.google.com', '_blank'); // Your blog/web link
-                setTimeout(() => finalizeTask('web', 0.05), 15000);
-            } else if (type === 'smart') {
-                window.open(SMART_LINK, '_blank');
-                tg.showConfirm("Task Complete?", (ok) => { if(ok) finalizeTask('smart', 0.10); });
-            }
-        }
-
-        function finalizeTask(type, reward) {
-            balance += reward;
-            taskLimits[type]--;
-            updateData();
-            tg.showAlert(`Congratulation! ${reward} TK Added.`);
-        }
-
-        // Spinner logic
-        function handleSpin() {
-            if (taskLimits.spin <= 0) return tg.showAlert("Limit finished!");
-            const btn = document.getElementById('spin-btn');
-            const wheel = document.getElementById('wheel');
-            btn.disabled = true;
-
-            const rotate = Math.floor(3000 + Math.random() * 3000);
-            wheel.style.transform = `rotate(${rotate}deg)`;
-
-            setTimeout(() => {
-                show_10506581().then(() => {
-                    finalizeTask('spin', 0.05);
-                    btn.disabled = false;
-                }).catch(() => {
-                    tg.showAlert("Ad Error!");
-                    btn.disabled = false;
-                });
-            }, 4000);
-        }
-
-        async function submitWithdraw() {
-            const amt = document.getElementById('w-amount').value;
-            const phone = document.getElementById('w-phone').value;
-            const method = document.getElementById('w-method').value;
-
-            if (amt < 40 || amt > balance || phone.length < 10) return tg.showAlert("Invalid Input!");
-
-            const text = encodeURIComponent(`💰 New Withdraw!\nUser: ${user.first_name}\nID: ${user.id}\nMethod: ${method}\nPhone: ${phone}\nAmount: ${amt} TK`);
-            
-            try {
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${text}`);
-                balance -= parseFloat(amt);
-                updateData();
-                tg.showAlert("Withdraw Request Sent!");
-            } catch(e) { tg.showAlert("Network Error!"); }
-        }
-    </script>
-
-    <div class="ad-footer" style="position: fixed; bottom: 65px; left: 0; width: 100%; border-radius: 0;">
-        <script type="text/javascript">
-            atOptions = { 'key' : '844fbcd18257b08f493940b654828c18', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="https://www.highperformanceformat.com/844fbcd18257b08f493940b654828c18/invoke.js"></script>
-    </div>
-</body>
-</html>
+        const SMART_LINK = "
