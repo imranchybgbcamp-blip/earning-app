@@ -222,11 +222,11 @@
         }
 
         function finalizeTask(type) {
-            balance += 0.7; // প্রতি অ্যাডে ০.৭ টাকা
+            balance += 0.7; // প্রতি অ্যাডে ০.০৭ টাকা
             taskLimits[type]--;
             saveData();
             updateUI();
-            tg.showAlert("অভিনন্দন! ০.৭ টাকা যোগ হয়েছে।");
+            tg.showAlert("অভিনন্দন! ০.০৭ টাকা যোগ হয়েছে।");
         }
 
         function handleSpin() {
